@@ -18,7 +18,7 @@ export class AppComponent implements OnInit{
   });
 
   transcript?: {transcript: [{text:string,start:number, duration:number}], is_generated: boolean};
-  
+
   constructor(private http: HttpClient){}
 
 
@@ -31,11 +31,11 @@ export class AppComponent implements OnInit{
       "video_id":"dBF65_kHdNg",
       "lang":"de"
     }).subscribe(result => {
-      console.log(result);
+      // console.log(result);
       this.transcript = result;
-    })
-    
+    })      
   }  
+
 
   onPlayerStateChange(event:any){
     console.log("does this work?");
@@ -50,8 +50,11 @@ export class AppComponent implements OnInit{
   }
 
   getWordTranslation(word: string){
-    this.http.get(`https://linguee-api.fly.dev/api/v2/translations?query=name&src=de&dst=en&guess_direction=false&follow_corrections=always`)
-    .subscribe(result => console.log(result))
+    this.http.post<any>('http://127.0.0.1:5000/vocabulary/context',{
+      "word":word
+    }).subscribe(result => {
+      console.log("translation", result);
+    })      
   }
 
   changeTimeStamp(timestamp: number){
