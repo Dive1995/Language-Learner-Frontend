@@ -1,18 +1,35 @@
-<youtube-player #youtubePlayer [height]="450" [width]="800" videoId="dBF65_kHdNg" suggestedQuality="small" (stateChange)="onPlayerStateChange($event)"/>
-
-<div *ngIf="transcript">
-  <div class="caption__container" *ngFor="let caption of transcript?.transcript">
-      <p class="caption" *ngIf="caption.start !== highlightedTimestamp">
-        <span class="caption__timestamp" (click)="changeTimeStamp(caption.start)">{{formatSecondsToMinutes(caption.start)}}</span> 
-        <span class="caption__text">{{caption.text}}</span>
-      </p>
-
-      <p class="caption caption-highlighted" *ngIf="caption.start === highlightedTimestamp">
-        <span class="caption__timestamp" (click)="changeTimeStamp(caption.start)">{{formatSecondsToMinutes(caption.start)}}</span> 
-        <span class="caption__text">
-          <span class="caption__text-word" *ngFor="let word of breakSentence(caption.text)" (click)="getWordTranslation(word)">{{word}}</span>
-        </span>
-      </p>
-
+<div style="display: flex; background-color: blue;">
+  <div class="video__content" style="background-color: antiquewhite;">
+    <youtube-player #youtubePlayer [height]="450" [width]="800" videoId="dBF65_kHdNg" suggestedQuality="small" (stateChange)="onPlayerStateChange($event)"/>
+    
+    <div *ngIf="transcript">
+      <div class="caption__container" *ngFor="let caption of transcript?.transcript">
+          <p class="caption" *ngIf="caption.start !== highlightedTimestamp">
+            <span class="caption__timestamp" (click)="changeTimeStamp(caption.start)">{{formatSecondsToMinutes(caption.start)}}</span> 
+            <span class="caption__text">{{caption.text}}</span>
+          </p>
+    
+          <p class="caption caption-highlighted" *ngIf="caption.start === highlightedTimestamp">
+            <span class="caption__timestamp" (click)="changeTimeStamp(caption.start)">{{formatSecondsToMinutes(caption.start)}}</span> 
+            <span class="caption__text">
+              <span class="caption__text-word" *ngFor="let word of breakSentence(caption.text)" (click)="getWordTranslation(word)">{{word}}</span>
+            </span>
+          </p>
+    
+      </div>
+    </div>
+  </div>
+  <div class="vocabulary" style="background-color: aquamarine; width: 100%;">
+    <p>Vocabulary List</p>
+    <div *ngIf="context">
+      <p *ngFor="let noun of context.noun_meanings">{{noun}}</p>
+      <p *ngFor="let verb of context.verb_meanings">{{verb}}</p>
+      <p *ngFor="let adj of context.adj_meanings">{{adj}}</p>
+      <p *ngFor="let adv of context.adv_meanings">{{adv}}</p>
+      <p *ngFor="let other of context.other_meanings">{{other}}</p>
+      
+    </div>
   </div>
 </div>
+
+

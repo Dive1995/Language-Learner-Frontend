@@ -12,6 +12,22 @@ export class AppComponent implements OnInit{
   currentPlayTime:number = 0;
   highlightedTimestamp: number = 0;
   highlightTranscriptInterval: any;
+  
+  //TODO: make context type an interface
+  context?: {
+    adj_meanings: string, 
+    adv_meanings: [], 
+    noun_meanings: [],
+    verb_meanings: [],
+    other_meanings: [], 
+    is_noun: boolean,     
+    examples:[{src:string, trg: string}],
+    input: string,
+    noun:{
+        article:string,
+        gender:string,            
+    }        
+    }
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json'
@@ -31,14 +47,12 @@ export class AppComponent implements OnInit{
       "video_id":"dBF65_kHdNg",
       "lang":"de"
     }).subscribe(result => {
-      // console.log(result);
       this.transcript = result;
     })      
   }  
 
 
   onPlayerStateChange(event:any){
-    console.log("does this work?");
     if(event?.data === YT.PlayerState.PLAYING){
       this.highlightTranscriptInterval = setInterval(() => {
         this.currentPlayTime = this.youtubePlayer?.getCurrentTime() ?? 0;
@@ -50,43 +64,35 @@ export class AppComponent implements OnInit{
   }
 
   getWordTranslation(word: string){
+    word = word.replace(/[^a-zA-Z0-9]/g, '');
     this.http.post<any>('http://127.0.0.1:5000/vocabulary/context',{
       "word":word
     }).subscribe(result => {
-      console.log("translation", result);
+      this.context = result;
     })      
   }
 
   changeTimeStamp(timestamp: number){
-    // this.startSecond = 500;
-
     const player: any = this.youtubePlayer;
     player.seekTo(timestamp);
     player.playVideo();
   }
 
   highlightCaption(){
-    // console.log(this.currentPlayTime)
     this.highlightedTimestamp = this.transcript?.transcript.find(caption => caption.start <= this.currentPlayTime && this.currentPlayTime <= (caption.start + caption.duration))?.start ?? this.highlightedTimestamp;    
-    console.log(this.highlightedTimestamp)
   }
 
   breakSentence(sentence: string){
-    // console.log("sentence ", sentence);
     return sentence.split(' ');
   }
 
   formatSecondsToMinutes(seconds: number) {
-    // Convert seconds to minutes
     let minutes = Math.floor(seconds / 60);
-    // Calculate the remaining seconds
     let remainingSeconds = Math.round(seconds % 60);
 
-    // Ensure that both minutes and seconds are two digits
     let formattedMinutes = String(minutes).padStart(2, '0');
     let formattedSeconds = String(remainingSeconds).padStart(2, '0');
-
-    // Return the formatted time in "00:00" format
+    
     return `${formattedMinutes}:${formattedSeconds}`;
 }
 
