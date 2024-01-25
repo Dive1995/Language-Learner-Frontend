@@ -1,32 +1,50 @@
-<div style="display: flex; background-color: blue;">
-  <div class="video__content" style="background-color: antiquewhite;">
-    <youtube-player #youtubePlayer [height]="450" [width]="800" videoId="dBF65_kHdNg" suggestedQuality="small" (stateChange)="onPlayerStateChange($event)"/>
+<div class="youtube__container">
+  <div class="video__content">
+    <div #youtubePlayerContainer class="youtube-video">
+      <youtube-player #youtubePlayer [height]="videoHeight" [width]="videoWidth" videoId="4-eDoThe6qo" suggestedQuality="small" (stateChange)="onPlayerStateChange($event)"/>
+    </div>
     
-    <div *ngIf="transcript">
-      <div class="caption__container" *ngFor="let caption of transcript?.transcript">
-          <p class="caption" *ngIf="caption.start !== highlightedTimestamp">
+    <div *ngIf="transcript" class="transcript">
+      <div class="caption__container">
+          <!-- <p class="caption" *ngIf="caption.start !== highlightedTimestamp">
             <span class="caption__timestamp" (click)="changeTimeStamp(caption.start)">{{formatSecondsToMinutes(caption.start)}}</span> 
             <span class="caption__text">{{caption.text}}</span>
-          </p>
+          </p> -->
     
-          <p class="caption caption-highlighted" *ngIf="caption.start === highlightedTimestamp">
-            <span class="caption__timestamp" (click)="changeTimeStamp(caption.start)">{{formatSecondsToMinutes(caption.start)}}</span> 
+          <p class="caption caption-highlighted" *ngIf="highlightedTranscript">
+            <!-- <span class="caption__timestamp" (click)="seekVideoTo(highlightedTranscript.start)">{{formatSecondsToMinutes(highlightedTranscript.start)}}</span>  -->
             <span class="caption__text">
-              <span class="caption__text-word" *ngFor="let word of breakSentence(caption.text)" (click)="getWordTranslation(word)">{{word}}</span>
+              <span class="caption__text-word" *ngFor="let word of breakSentence(highlightedTranscript.text)" (click)="getWordTranslation(word)">{{word}}</span>
             </span>
           </p>
     
       </div>
     </div>
   </div>
-  <div class="vocabulary" style="background-color: aquamarine; width: 100%;">
-    <p>Vocabulary List</p>
+  <div class="vocabulary__container">
+    <p *ngIf="!context">Click on any word in the caption to learn its meaning.</p>
     <div *ngIf="context">
-      <p *ngFor="let noun of context.noun_meanings">{{noun}}</p>
-      <p *ngFor="let verb of context.verb_meanings">{{verb}}</p>
-      <p *ngFor="let adj of context.adj_meanings">{{adj}}</p>
-      <p *ngFor="let adv of context.adv_meanings">{{adv}}</p>
-      <p *ngFor="let other of context.other_meanings">{{other}}</p>
+      <div *ngIf="context.noun_meanings.length > 0">
+        <p style="color: chocolate;" *ngIf="context.is_noun">{{context.noun.article}} {{context.input}}</p>
+        <h3 style="text-decoration: underline;color: cornflowerblue;">Nouns</h3>
+        <p *ngFor="let noun of context.noun_meanings">{{noun}}</p>
+      </div>
+      <div *ngIf="context.verb_meanings.length > 0">
+        <h3 style="text-decoration: underline;color: cornflowerblue;">Verbs</h3>
+        <p *ngFor="let verb of context.verb_meanings">{{verb}}</p>
+      </div>
+      <div *ngIf="context.adj_meanings.length > 0">
+        <h3 style="text-decoration: underline;color: cornflowerblue;">Adjectives</h3>
+        <p *ngFor="let adj of context.adj_meanings">{{adj}}</p>
+      </div>
+      <div *ngIf="context.adv_meanings.length > 0">
+        <h3 style="text-decoration: underline;color: cornflowerblue;">Adverbs</h3>
+        <p *ngFor="let adv of context.adv_meanings">{{adv}}</p>
+      </div>
+      <div *ngIf="context.other_meanings.length > 0">
+        <h3 style="text-decoration: underline;color: cornflowerblue;">Other</h3>
+        <p *ngFor="let other of context.other_meanings">{{other}}</p>
+      </div>
       
     </div>
   </div>
