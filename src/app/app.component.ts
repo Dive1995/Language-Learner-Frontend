@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import {YouTubePlayer} from '@angular/youtube-player';
+import { TranscriptService } from './services/transcript/transcript.service';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,9 @@ import {YouTubePlayer} from '@angular/youtube-player';
 })
 export class AppComponent implements OnInit{
   @ViewChild('youtubePlayer', { static: true }) youtubePlayer?: YouTubePlayer;
-  @ViewChild('youtubePlayerContainer', { static: true }) youtubePlayerContainer?: ElementRef<HTMLDivElement>;
-  videoWidth: number | undefined;
-  videoHeight: number | undefined;
+  // @ViewChild('youtubePlayerContainer', { static: true }) youtubePlayerContainer?: ElementRef<HTMLDivElement>;
+  // videoWidth: number | undefined;
+  // videoHeight: number | undefined;
   isPlaying: boolean = false;
 
   currentPlayTime:number = 0;
@@ -39,53 +40,54 @@ export class AppComponent implements OnInit{
     'Content-Type': 'application/json'
   });
 
+  //TODO: move this to transcript
   transcript?: {transcript: [{text:string,start:number, duration:number}], is_generated: boolean};
 
-  constructor(private http: HttpClient, private changeDetectorRef: ChangeDetectorRef){}
+  constructor(private http: HttpClient, private transcriptService: TranscriptService, private changeDetectorRef: ChangeDetectorRef){}
 
 
   ngOnInit() {
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    document.body.appendChild(tag);
+    // const tag = document.createElement('script');
+    // tag.src = 'https://www.youtube.com/iframe_api';
+    // document.body.appendChild(tag);
 
-    this.http.post<any>('http://127.0.0.1:5000/video',{
-      "video_id":"4-eDoThe6qo",
-      "lang":"de-DE"
-    }).subscribe(result => {
+    //TODO: move this to transcript
+    this.transcriptService.getTranscript('4-eDoThe6qo').subscribe(result => {
       this.transcript = result;
     })      
   }  
 
-  ngAfterViewInit(): void {
-    this.onResize();
-    window.addEventListener('resize', this.onResize);
-  }
+  // ngAfterViewInit(): void {
+  //   this.onResize();
+  //   window.addEventListener('resize', this.onResize);
+  // }
 
-  onResize = (): void => {
-    // Automatically expand the video to fit the page up to 1200px x 720px
-    this.videoWidth = this.youtubePlayerContainer ? Math.min(this.youtubePlayerContainer.nativeElement.clientWidth, 1100) : 0;
-    this.videoHeight = this.videoWidth * 0.6;
-    this.changeDetectorRef.detectChanges();
-  }
+  // onResize = (): void => {
+  //   // Automatically expand the video to fit the page up to 1200px x 720px
+  //   this.videoWidth = this.youtubePlayerContainer ? Math.min(this.youtubePlayerContainer.nativeElement.clientWidth, 1100) : 0;
+  //   this.videoHeight = this.videoWidth * 0.6;
+  //   this.changeDetectorRef.detectChanges();
+  // }
 
-  ngOnDestroy(): void {
-    window.removeEventListener('resize', this.onResize);
-  }
+  // ngOnDestroy(): void {
+  //   window.removeEventListener('resize', this.onResize);
+  // }
 
 
-  onPlayerStateChange(event:any){
-    this.isPlaying = event.data == 1 ? true : false;
-    if(event?.data === YT.PlayerState.PLAYING){
-      this.highlightTranscriptInterval = setInterval(() => {
-        this.currentPlayTime = this.youtubePlayer?.getCurrentTime() ?? 0;
-        this.updateCaption()
-      },500)
-    }else{
-      clearInterval(this.highlightTranscriptInterval);
-    }
-  }
 
+  // onPlayerStateChange(event:any){
+  //   this.isPlaying = event.data == 1 ? true : false;
+  //   if(event?.data === YT.PlayerState.PLAYING){
+  //     this.highlightTranscriptInterval = setInterval(() => {
+  //       this.currentPlayTime = this.youtubePlayer?.getCurrentTime() ?? 0;
+  //       this.updateCaption()
+  //     },500)
+  //   }else{
+  //     clearInterval(this.highlightTranscriptInterval);
+  //   }
+  // }
+
+  //TODO: move to vocabulary service
   getWordTranslation(word: string){
     word = word.replace(/[^a-zA-Z0-9]/g, '');
     this.http.post<any>('http://127.0.0.1:5000/vocabulary/context',{
@@ -162,28 +164,28 @@ switchTranscriptTo(track: string): void {
   this.seekVideoTo(this.highlightedTranscript?.start);
 }
 
-@HostListener('window:keydown', ['$event'])
-handleKeyboardEvents(event: KeyboardEvent){
+// @HostListener('window:keydown', ['$event'])
+// handleKeyboardEvents(event: KeyboardEvent){
 
-  switch (event.key) {
-    case 'ArrowLeft':
-      this.switchTranscriptTo("prev")
-      break;
-    case 'ArrowRight':
-      this.switchTranscriptTo("next")
-      break;
-      case ' ':
-        // Handle space key
-        this.playHandler()
-      break;
-    case 'r':
-    case 'R':
-      // Handle 'R' key
-      this.switchTranscriptTo("repeat")
-      break;
-    default:
-      break;
-  }
-}
+//   switch (event.key) {
+//     case 'ArrowLeft':
+//       this.switchTranscriptTo("prev")
+//       break;
+//     case 'ArrowRight':
+//       this.switchTranscriptTo("next")
+//       break;
+//       case ' ':
+//         // Handle space key
+//         this.playHandler()
+//       break;
+//     case 'r':
+//     case 'R':
+//       // Handle 'R' key
+//       this.switchTranscriptTo("repeat")
+//       break;
+//     default:
+//       break;
+//   }
+// }
 
 }

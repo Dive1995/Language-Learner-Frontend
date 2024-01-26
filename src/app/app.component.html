@@ -1,8 +1,9 @@
 <div class="youtube__container">
   <div class="video__content">
-    <div #youtubePlayerContainer class="youtube-video">
+    <yt-video></yt-video>
+    <!-- <div #youtubePlayerContainer class="youtube-video">
       <youtube-player #youtubePlayer [height]="videoHeight" [width]="videoWidth" videoId="4-eDoThe6qo" suggestedQuality="small" (stateChange)="onPlayerStateChange($event)"/>
-    </div>
+    </div> -->
     
     <div *ngIf="transcript" class="transcript">
       <div class="caption__container">

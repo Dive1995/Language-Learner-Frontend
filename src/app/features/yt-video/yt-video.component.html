@@ -1,0 +1,5 @@
+<p>yt-video works!</p>
+
+<div #youtubePlayerContainer class="youtube-video">
+    <youtube-player #youtubePlayer [height]="videoHeight" [width]="videoWidth" videoId="4-eDoThe6qo" suggestedQuality="small" (stateChange)="onPlayerStateChange($event)"/>
+</div>
