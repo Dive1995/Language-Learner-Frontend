@@ -14,8 +14,11 @@ export class YtVideoComponent implements OnInit{
   @ViewChild('youtubePlayer', { static: true }) youtubePlayer: YouTubePlayer | null= null;
   videoWidth: number | undefined;
   videoHeight: number | undefined;
+  videoId: string = 'GAhWN9zmEV0';
 
-  isPlaying: boolean = false;
+  highlightTranscriptInterval: any;
+
+  // isPlaying: boolean = false;
 
 
   constructor(private http: HttpClient, private youtubeService: YoutubeService, private changeDetectorRef: ChangeDetectorRef){}
@@ -25,6 +28,17 @@ export class YtVideoComponent implements OnInit{
     tag.src = 'https://www.youtube.com/iframe_api';
     document.body.appendChild(tag);
   }
+
+  // onYouTubeIframeAPIReady() {
+  //   this.youtubePlayer = new YT.Player('player', {
+  //     height: '390',
+  //     width: '640',
+  //     videoId: 'M7lc1UVf-VE',
+  //     playerVars: {
+  //       'controls': 0
+  //     }
+  //   });
+  // }
 
   ngAfterViewInit(): void {
     this.youtubeService.setYoutubePlayer(this.youtubePlayer);
@@ -44,42 +58,25 @@ export class YtVideoComponent implements OnInit{
     window.removeEventListener('resize', this.onResize);
   }
 
+  // @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvents(event: any){
+    
+  }
+
   onPlayerStateChange(event:any){
-    this.isPlaying = event.data == 1 ? true : false;
-    // //TODO: create a seperate fn for updating the transcript while playing (need to check if we can, maybe we can;t bcz of the timer)
-    // if(event?.data === YT.PlayerState.PLAYING){
-    //   this.highlightTranscriptInterval = setInterval(() => {
-    //     this.currentPlayTime = this.youtubePlayer?.getCurrentTime() ?? 0;
-    //     this.updateCaption()
-    //   },500)
-    // }else{
-    //   clearInterval(this.highlightTranscriptInterval);
-    // }
+    this.youtubeService.setPlayerState(event.data == 1 ? true : false);
+    //TODO:create a seperate fn for updating the transcript while playing (need to check if we can, maybe we can;t bcz of the timer)
+    if(event?.data === YT.PlayerState.PLAYING){
+      this.highlightTranscriptInterval = setInterval(() => {
+        var currentPlayTime = this.youtubePlayer?.getCurrentTime() ?? 0;
+        this.youtubeService.setCurrentPlayTime(currentPlayTime)
+        // this.updateCaption()
+      },300)
+    }else{
+      clearInterval(this.highlightTranscriptInterval);
+    }
   }
 
 
-// @HostListener('window:keydown', ['$event'])
-// handleKeyboardEvents(event: KeyboardEvent){
 
-//   switch (event.key) {
-//     case 'ArrowLeft':
-//       this.switchTranscriptTo("prev")
-//       break;
-//     case 'ArrowRight':
-//       this.switchTranscriptTo("next")
-//       break;
-//       case ' ':
-//         // Handle space key
-//         this.playHandler()
-//       break;
-//     case 'r':
-//     case 'R':
-//       // Handle 'R' key
-//       this.switchTranscriptTo("repeat")
-//       break;
-//     default:
-//       break;
-//   }
-// }
-  
 }

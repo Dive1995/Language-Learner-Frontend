@@ -1,0 +1,40 @@
+<div class="youtube__container">
+    <div class="video__content">
+      <yt-video></yt-video>
+      <!-- <div #youtubePlayerContainer class="youtube-video">
+        <youtube-player #youtubePlayer [height]="videoHeight" [width]="videoWidth" videoId="4-eDoThe6qo" suggestedQuality="small" (stateChange)="onPlayerStateChange($event)"/>
+      </div> -->
+      <app-captions></app-captions>
+      
+    </div>
+    <div class="vocabulary__container">
+      <p *ngIf="!context">Click on any word in the caption to learn its meaning.</p>
+      <div *ngIf="context">
+        <div *ngIf="context.noun_meanings.length > 0">
+          <p style="color: chocolate;" *ngIf="context.is_noun">{{context.noun.article}} {{context.input}}</p>
+          <h3 style="text-decoration: underline;color: cornflowerblue;">Nouns</h3>
+          <p *ngFor="let noun of context.noun_meanings">{{noun}}</p>
+        </div>
+        <div *ngIf="context.verb_meanings.length > 0">
+          <h3 style="text-decoration: underline;color: cornflowerblue;">Verbs</h3>
+          <p *ngFor="let verb of context.verb_meanings">{{verb}}</p>
+        </div>
+        <div *ngIf="context.adj_meanings.length > 0">
+          <h3 style="text-decoration: underline;color: cornflowerblue;">Adjectives</h3>
+          <p *ngFor="let adj of context.adj_meanings">{{adj}}</p>
+        </div>
+        <div *ngIf="context.adv_meanings.length > 0">
+          <h3 style="text-decoration: underline;color: cornflowerblue;">Adverbs</h3>
+          <p *ngFor="let adv of context.adv_meanings">{{adv}}</p>
+        </div>
+        <div *ngIf="context.other_meanings.length > 0">
+          <h3 style="text-decoration: underline;color: cornflowerblue;">Other</h3>
+          <p *ngFor="let other of context.other_meanings">{{other}}</p>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  

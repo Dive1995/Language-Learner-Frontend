@@ -10,13 +10,17 @@ import { HttpClient } from '@angular/common/http';
 export class CaptionsComponent implements OnInit{
   //FIXME: create a transcrip model
   transcript?: {transcript: [{text:string,start:number, duration:number}], is_generated: boolean};
+  highlightedTranscript: any = null;
+
+  caption$ = this.transcriptService.timedCaption$;
 
   constructor(private http: HttpClient, private transcriptService: TranscriptService, private changeDetectorRef: ChangeDetectorRef){}
 
   ngOnInit(): void {
-    this.transcriptService.getTranscript('4-eDoThe6qo').subscribe(result => {
-      this.transcript = result;
-    })      
+    
   }
 
+  breakSentence(sentence: string){
+    return sentence.split(' ');
+  }
 }

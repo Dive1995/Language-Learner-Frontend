@@ -1,0 +1,9 @@
+<div *ngIf="caption$ | async as caption" class="transcript">
+    <div class="caption__container">
+        <p class="caption caption-highlighted" *ngIf="caption.caption?.length">
+          <span class="caption__text">
+            <span class="caption__text-word" *ngFor="let word of caption.caption">{{word}}</span>
+          </span>
+        </p>
+    </div>
+  </div>
