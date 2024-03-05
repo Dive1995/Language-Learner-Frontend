@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TranscriptService } from '../../services/transcript/transcript.service';
 import { HttpClient } from '@angular/common/http';
+import { VocabularyService } from '../../services/vocabulary/vocabulary.service';
 
 @Component({
   selector: 'app-captions',
@@ -14,13 +15,18 @@ export class CaptionsComponent implements OnInit{
 
   caption$ = this.transcriptService.timedCaption$;
 
-  constructor(private http: HttpClient, private transcriptService: TranscriptService, private changeDetectorRef: ChangeDetectorRef){}
+  constructor(
+    private http: HttpClient, 
+    private transcriptService: TranscriptService, 
+    private vocabularyService: VocabularyService){}
 
   ngOnInit(): void {
     
   }
 
-  breakSentence(sentence: string){
-    return sentence.split(' ');
+  findWordMeaning(value: string){
+   console.log(value); 
+   this.vocabularyService.setSearchingWord(value)
+  //  this.vocabularyService.getWordMeaning(value).subscribe(value => console.log("result: ", value)); 
   }
 }

@@ -2,7 +2,12 @@
     <div class="caption__container">
         <p class="caption caption-highlighted" *ngIf="caption.caption?.length">
           <span class="caption__text">
-            <span class="caption__text-word" *ngFor="let word of caption.caption">{{word}}</span>
+            <span class="caption__text-word" *ngFor="let word of caption.caption" (click)="findWordMeaning(word)">{{word}}</span>
+          </span>
+        </p>
+        <p class="caption caption-highlighted" *ngIf="caption.secondCaption?.length">
+          <span class="caption__text">
+            <span class="caption__text-word" *ngFor="let word of caption.secondCaption" (click)="findWordMeaning(word)">{{word}}</span>
           </span>
         </p>
     </div>

@@ -9,7 +9,8 @@
     </div>
     <div class="vocabulary__container">
       <p *ngIf="!context">Click on any word in the caption to learn its meaning.</p>
-      <div *ngIf="context">
+
+      <div *ngIf="wordMeaning$ | async as context">
         <div *ngIf="context.noun_meanings.length > 0">
           <p style="color: chocolate;" *ngIf="context.is_noun">{{context.noun.article}} {{context.input}}</p>
           <h3 style="text-decoration: underline;color: cornflowerblue;">Nouns</h3>

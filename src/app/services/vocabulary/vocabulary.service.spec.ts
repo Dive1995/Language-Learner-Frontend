@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WordContextService } from './word-context.service';
+import { VocabularyService } from './vocabulary.service';
 
 describe('WordContextService', () => {
-  let service: WordContextService;
+  let service: VocabularyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(WordContextService);
+    service = TestBed.inject(VocabularyService);
   });
 
   it('should be created', () => {

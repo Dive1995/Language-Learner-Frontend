@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { TranscriptService } from '../../services/transcript/transcript.service';
 import { YoutubeService } from '../../services/youtube/youtube.service';
+import { VocabularyService } from '../../services/vocabulary/vocabulary.service';
 
 @Component({
   selector: 'app-learn',
@@ -31,10 +32,13 @@ export class LearnComponent {
     'Content-Type': 'application/json'
   });
 
+  wordMeaning$ = this.vocabularyService.wordMeaning$;
+
 
   constructor(
     private http: HttpClient, 
     private transcriptService: TranscriptService, 
+    private vocabularyService: VocabularyService, 
     private changeDetectorRef: ChangeDetectorRef,
     private youtubeService: YoutubeService){}
 

@@ -28,16 +28,25 @@ export class TranscriptService {
       "lang":"de" //TODO: make language as input array ["de","de-DE"]
     })
 
+  secondTranscript$ = this.http.post<{transcript: [{text:string,start:number, duration:number}], is_generated: boolean}>(this._baseUrl,{
+      "video_id": 'GAhWN9zmEV0', //this.youtubeService.video_id$,
+      "lang":"en" //TODO: make language as input array ["de","de-DE"]
+    })
+
 
   timedCaption$ = combineLatest(
     this.youtubeService.currentPlayTime$,
-    this.transcript$
+    this.transcript$, 
+    this.secondTranscript$
   ).pipe(
-    map(([playTime, transcript]) => {
+    map(([playTime, transcript, secondTranscript]) => {
       let currentCaptionIndex = transcript.transcript.findIndex(caption => caption.start <= playTime && playTime <= (caption.start + caption.duration)) || -1;
+      let currentSecondCaptionIndex = secondTranscript.transcript.findIndex(caption => caption.start <= playTime && playTime <= (caption.start + caption.duration)) || -1;
       return {
         transcript: transcript.transcript,
+        secondTranscript: secondTranscript.transcript,
         caption: transcript.transcript[currentCaptionIndex]?.text.split(' '),
+        secondCaption: secondTranscript.transcript[currentSecondCaptionIndex]?.text.split(' '),
         index: currentCaptionIndex
       }
     })
