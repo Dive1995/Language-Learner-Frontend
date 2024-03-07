@@ -1,13 +1,15 @@
-<div *ngIf="caption$ | async as caption" class="transcript">
+<div *ngIf="transcript$ | async as transcript" class="transcript">
+    <!-- TODO: add an info icon, popup this on the first load then hide it, make it clickable-->
+    <p *ngIf="transcript.isGenerated" class="caption__info">Please note that the following transcript is a generated one, and might not be correct</p>
     <div class="caption__container">
-        <p class="caption caption-highlighted" *ngIf="caption.caption?.length">
+        <p class="caption caption-highlighted" *ngIf="transcript.firstCaption?.length">
           <span class="caption__text">
-            <span class="caption__text-word" *ngFor="let word of caption.caption" (click)="findWordMeaning(word)">{{word}}</span>
+            <span class="caption__text-word" *ngFor="let word of transcript.firstCaption" (click)="findWordMeaning(word)">{{word}}</span>
           </span>
         </p>
-        <p class="caption caption-highlighted" *ngIf="caption.secondCaption?.length">
+        <p class="caption caption-highlighted" *ngIf="transcript.secondCaption?.length">
           <span class="caption__text">
-            <span class="caption__text-word" *ngFor="let word of caption.secondCaption" (click)="findWordMeaning(word)">{{word}}</span>
+            <span class="caption__text-word" *ngFor="let word of transcript.secondCaption">{{word}}</span>
           </span>
         </p>
     </div>

@@ -14,7 +14,7 @@ export class YtVideoComponent implements OnInit{
   @ViewChild('youtubePlayer', { static: true }) youtubePlayer: YouTubePlayer | null= null;
   videoWidth: number | undefined;
   videoHeight: number | undefined;
-  videoId: string = 'GAhWN9zmEV0';
+  videoId: string = 'zDxlhYwSU-0';
 
   highlightTranscriptInterval: any;
 
@@ -71,7 +71,7 @@ export class YtVideoComponent implements OnInit{
         var currentPlayTime = this.youtubePlayer?.getCurrentTime() ?? 0;
         this.youtubeService.setCurrentPlayTime(currentPlayTime)
         // this.updateCaption()
-      },300)
+      },500)
     }else{
       clearInterval(this.highlightTranscriptInterval);
     }

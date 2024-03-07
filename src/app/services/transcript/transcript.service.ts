@@ -3,18 +3,16 @@ import { Injectable } from '@angular/core';
 import { Observable, fromEvent, map, startWith, take, tap } from 'rxjs';
 import { YoutubeService } from '../youtube/youtube.service';
 import { combineLatest } from 'rxjs'
+import Transcript  from '../../Models/transcript'
+import Caption  from '../../Models/Caption'
 
 @Injectable({
   providedIn: 'root'
 })
 export class TranscriptService {
-  _baseUrl: string = 'http://127.0.0.1:5000/video';
+  _baseUrl: string = 'http://127.0.0.1:5000/video';  
 
-  highlightTranscriptInterval: any;
-  indexOfCurrentTranscript: number = -1;
-  currentPlayTime:number = 0;
-
-  transcript?: {transcript: [{text:string,start:number, duration:number}], is_generated: boolean};
+  transcript?: Transcript;
   highlightedTranscript: any = null;
 
   keyDowns$ = fromEvent<KeyboardEvent>(document, 'keydown');
@@ -23,68 +21,76 @@ export class TranscriptService {
   constructor(private http: HttpClient, private youtubeService: YoutubeService) { }
 
   //FIXME: create a model and replace the type
-  transcript$ = this.http.post<{transcript: [{text:string,start:number, duration:number}], is_generated: boolean}>(this._baseUrl,{
-      "video_id": 'GAhWN9zmEV0', //this.youtubeService.video_id$,
-      "lang":"de" //TODO: make language as input array ["de","de-DE"]
+  transcript$ = this.http.post<Transcript>(this._baseUrl,{
+      "video_id": 'zDxlhYwSU-0', //this.youtubeService.video_id$,
+      "lang": {
+        "first": ["de", "de-DE"],
+        "second": ["en"]
+      } 
     })
-
-  secondTranscript$ = this.http.post<{transcript: [{text:string,start:number, duration:number}], is_generated: boolean}>(this._baseUrl,{
-      "video_id": 'GAhWN9zmEV0', //this.youtubeService.video_id$,
-      "lang":"en" //TODO: make language as input array ["de","de-DE"]
-    })
-
 
   timedCaption$ = combineLatest(
     this.youtubeService.currentPlayTime$,
     this.transcript$, 
-    this.secondTranscript$
   ).pipe(
-    map(([playTime, transcript, secondTranscript]) => {
-      let currentCaptionIndex = transcript.transcript.findIndex(caption => caption.start <= playTime && playTime <= (caption.start + caption.duration)) || -1;
-      let currentSecondCaptionIndex = secondTranscript.transcript.findIndex(caption => caption.start <= playTime && playTime <= (caption.start + caption.duration)) || -1;
-      return {
-        transcript: transcript.transcript,
-        secondTranscript: secondTranscript.transcript,
-        caption: transcript.transcript[currentCaptionIndex]?.text.split(' '),
-        secondCaption: secondTranscript.transcript[currentSecondCaptionIndex]?.text.split(' '),
-        index: currentCaptionIndex
+    map(([playTime, transcript]) => {
+      let currentCaptionIndex = -1;
+
+      for (let i = 0; i < transcript.firstTranscript.length; i++) {
+        if (playTime >= transcript.firstTranscript[i].start) {
+            currentCaptionIndex = i;
+        } else {
+            break;
+        }
       }
-    })
+
+      return {
+        firstTranscript: transcript.firstTranscript[currentCaptionIndex],
+        secondTranscript: transcript.secondTranscript[currentCaptionIndex],
+        firstCaption: transcript.firstTranscript[currentCaptionIndex]?.text.split(' '),
+        secondCaption: transcript.secondTranscript[currentCaptionIndex]?.text.split(' '),
+        index: currentCaptionIndex,
+        isGenerated: transcript.first_is_generated
+      }
+    }),
+    // tap((value) => console.log(value.firstTranscript))
   )
 
-  timedCaptionWithEvents$ = combineLatest(
-    this.keyDowns$,
-    this.transcript$,
-    this.youtubeService.currentPlayTime$,
-  ).pipe(
-    map(([event, transcript, playTime]) => {
-      let currentCaptionIndex = transcript.transcript.findIndex(caption => caption.start <= playTime && playTime <= (caption.start + caption.duration)) || -1;
+  // timedCaptionWithEvents$ = combineLatest(
+  //   this.keyDowns$,
+  //   this.transcript$,
+  //   this.youtubeService.currentPlayTime$,
+  // ).pipe(
+  //   map(([event, transcript, playTime]) => {
+  //     let currentCaptionIndex = transcript.firstTranscript.findIndex((caption:Caption) => caption.start <= playTime && playTime <= (caption.start + caption.duration)) || -1;
 
-      switch (event.key) {
-        case 'ArrowLeft':
-          currentCaptionIndex -= 1;
-          console.log("yt left");
-          this.youtubeService.seekVideoTo(transcript.transcript[currentCaptionIndex]?.start)
-          break;
-        case 'ArrowRight':
-          currentCaptionIndex += 1;
-          this.youtubeService.seekVideoTo(transcript.transcript[currentCaptionIndex]?.start)
-          console.log("yt right");
-          break;
-        case ' ':
-          console.log("yt space");
-          this.youtubeService.playHandler()
-          break;
-        default:
-          break;
-      }
-      return {
-        transcript: transcript.transcript[currentCaptionIndex],
-        caption: transcript.transcript[currentCaptionIndex]?.text.split(' '),
-        index: currentCaptionIndex
-      }
-    })
-  )
+  //     switch (event.key) {
+  //       case 'ArrowLeft':
+  //         currentCaptionIndex -= 1;
+  //         console.log("yt left");
+  //         this.youtubeService.seekVideoTo(transcript.firstTranscript[currentCaptionIndex]?.start)
+  //         break;
+  //       case 'ArrowRight':
+  //         currentCaptionIndex += 1;
+  //         this.youtubeService.seekVideoTo(transcript.firstTranscript[currentCaptionIndex]?.start)
+  //         console.log("yt right");
+  //         break;
+  //       case ' ':
+  //         console.log("yt space");
+  //         this.youtubeService.playHandler()
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //     return {
+  //       firstTranscript: transcript.firstTranscript,
+  //       secondTranscript: transcript.secondTranscript,
+  //       firstCaption: transcript.firstTranscript[currentCaptionIndex]?.text.split(' '),
+  //       secondCaption: transcript.secondTranscript[currentCaptionIndex]?.text.split(' '),
+  //       index: currentCaptionIndex
+  //     }
+  //   })
+  // )
 
 
   // updateCaption(automatic: boolean = true){

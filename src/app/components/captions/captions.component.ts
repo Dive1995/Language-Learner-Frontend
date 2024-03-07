@@ -13,7 +13,7 @@ export class CaptionsComponent implements OnInit{
   transcript?: {transcript: [{text:string,start:number, duration:number}], is_generated: boolean};
   highlightedTranscript: any = null;
 
-  caption$ = this.transcriptService.timedCaption$;
+  transcript$ = this.transcriptService.timedCaption$;
 
   constructor(
     private http: HttpClient, 
