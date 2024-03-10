@@ -1,7 +1,11 @@
 <div *ngIf="transcript$ | async as transcript" class="transcript">
     <!-- TODO: add an info icon, popup this on the first load then hide it, make it clickable-->
-    <p *ngIf="transcript.isGenerated" class="caption__info">Please note that the following transcript is a generated one, and might not be correct</p>
+    <p *ngIf="transcript.isGenerated" class="caption__info">
+      <i class='bx bxs-info-circle'></i>
+      Please note that the following transcript is a generated one, and might not be correct
+    </p>
     <div class="caption__container">
+      <span>asfs</span>
         <p class="caption caption-highlighted" *ngIf="transcript.firstCaption?.length">
           <span class="caption__text">
             <span class="caption__text-word" *ngFor="let word of transcript.firstCaption" (click)="findWordMeaning(word)">{{word}}</span>

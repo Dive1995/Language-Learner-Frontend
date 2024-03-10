@@ -44,6 +44,7 @@ export class LearnComponent {
 
 
   ngOnInit() {
+    this.youtubeService.setVideoId('F6khA8eZaD4')
   }  
 
 

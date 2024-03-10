@@ -3,6 +3,7 @@ import { TranscriptService } from '../../services/transcript/transcript.service'
 import { HttpClient } from '@angular/common/http';
 import { YouTubePlayer } from '@angular/youtube-player';
 import { YoutubeService } from '../../services/youtube/youtube.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'yt-video',
@@ -11,10 +12,11 @@ import { YoutubeService } from '../../services/youtube/youtube.service';
 })
 export class YtVideoComponent implements OnInit{
   @ViewChild('youtubePlayerContainer', { static: true }) youtubePlayerContainer?: ElementRef<HTMLDivElement>;
-  @ViewChild('youtubePlayer', { static: true }) youtubePlayer: YouTubePlayer | null= null;
+  @ViewChild('youtubePlayer') youtubePlayer!: YouTubePlayer;
   videoWidth: number | undefined;
   videoHeight: number | undefined;
-  videoId: string = 'zDxlhYwSU-0';
+
+  videoId$ = this.youtubeService.video_id$;
 
   highlightTranscriptInterval: any;
 

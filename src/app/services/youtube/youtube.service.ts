@@ -18,7 +18,7 @@ export class YoutubeService {
   isPlaying$ = this.videoPlayingSubject.asObservable();
 
   // current video_id of the playing video
-  private videoIdSubject = new Subject<string>();
+  private videoIdSubject = new BehaviorSubject<string>('');
   video_id$ = this.videoIdSubject.asObservable();
 
   setVideoId(id: string){

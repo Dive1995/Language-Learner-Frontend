@@ -21,21 +21,10 @@
     padding: 10px;
 }
 
-.caption__timestamp{
-    color:rgb(34, 34, 164);
-}
-
-.caption__timestamp:hover{
-    cursor: pointer;
-}
-
 .caption__text{
     margin-left: 10px;
 }
 
-.caption-highlighted .caption__timestamp{
-    /* color:red; */
-}
 
 .caption__text-word{
     margin-left: 3px;
@@ -47,5 +36,5 @@
 }
 
 .caption__info{
-    color: red;
+    color: $text-gray-dark;
 }

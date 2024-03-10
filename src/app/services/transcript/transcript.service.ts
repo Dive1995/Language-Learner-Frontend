@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, fromEvent, map, startWith, take, tap } from 'rxjs';
+import { Observable, fromEvent, map, startWith, switchMap, take, tap } from 'rxjs';
 import { YoutubeService } from '../youtube/youtube.service';
 import { combineLatest } from 'rxjs'
 import Transcript  from '../../Models/transcript'
@@ -20,40 +20,63 @@ export class TranscriptService {
 
   constructor(private http: HttpClient, private youtubeService: YoutubeService) { }
 
-  //FIXME: create a model and replace the type
-  transcript$ = this.http.post<Transcript>(this._baseUrl,{
-      "video_id": 'zDxlhYwSU-0', //this.youtubeService.video_id$,
-      "lang": {
-        "first": ["de", "de-DE"],
-        "second": ["en"]
-      } 
-    })
+
+  transcript$ = this.youtubeService.video_id$.pipe(
+    switchMap(videoId => {
+        return this.http.post<Transcript>(this._baseUrl, {
+          "video_id": videoId,
+          "lang": {
+            "first": ["de", "de-DE"],
+            "second": ["en"]
+          }
+        });
+      })
+    );
+  
+
+  // transcript$ = this.http.post<Transcript>(this._baseUrl,{
+  //     "video_id": 'F6khA8eZaD4', //this.youtubeService.video_id$,
+  //     "lang": {
+  //       "first": ["de", "de-DE"],
+  //       "second": ["en"]
+  //     } 
+  //   }).pipe(take(1))
 
   timedCaption$ = combineLatest(
     this.youtubeService.currentPlayTime$,
     this.transcript$, 
   ).pipe(
     map(([playTime, transcript]) => {
-      let currentCaptionIndex = -1;
+      let firstCaptionIndex = -1;
+      let secondCaptionIndex = -1;
 
+      // the loops will always start from the beginning of the transcrip, if it could be improved that it doesn't always do that, would be nice.
       for (let i = 0; i < transcript.firstTranscript.length; i++) {
         if (playTime >= transcript.firstTranscript[i].start) {
-            currentCaptionIndex = i;
+            firstCaptionIndex = i;
+        } else {
+            break;
+        }
+      }
+
+      for (let i = 0; i < transcript.secondTranscript.length; i++) {
+        if (playTime >= transcript.secondTranscript[i].start) {
+          secondCaptionIndex = i;
         } else {
             break;
         }
       }
 
       return {
-        firstTranscript: transcript.firstTranscript[currentCaptionIndex],
-        secondTranscript: transcript.secondTranscript[currentCaptionIndex],
-        firstCaption: transcript.firstTranscript[currentCaptionIndex]?.text.split(' '),
-        secondCaption: transcript.secondTranscript[currentCaptionIndex]?.text.split(' '),
-        index: currentCaptionIndex,
+        firstTranscript: transcript.firstTranscript[firstCaptionIndex],
+        secondTranscript: transcript.secondTranscript[secondCaptionIndex],
+        firstCaption: transcript.firstTranscript[firstCaptionIndex]?.text.split(' '),
+        secondCaption: transcript.secondTranscript[secondCaptionIndex]?.text.split(' '),
+        firstIndex: firstCaptionIndex,
+        secondIndex: secondCaptionIndex,
         isGenerated: transcript.first_is_generated
       }
-    }),
-    // tap((value) => console.log(value.firstTranscript))
+    })
   )
 
   // timedCaptionWithEvents$ = combineLatest(
