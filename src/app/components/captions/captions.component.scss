@@ -4,25 +4,28 @@
     /* background-color: antiquewhite; */
     margin-bottom: 30px;
     max-width: 600px;
+    width: fit-content;
     margin: 0 auto;
 }
 
 .caption{
-    padding: 10px;
-    font-size: 20px;
-    display: flex;
-    color:gray;
-}
-
-.caption-highlighted{
+    font-size: 18px;
     color: black;
     background-color: $text-gray-light;
     border-radius: 5px;
-    padding: 10px;
 }
 
 .caption__text{
-    margin-left: 10px;
+    text-align: center;
+    padding: 5px;
+}
+
+.caption-second{
+    filter: blur(8px);
+
+    &:hover{
+        filter: blur(0);
+    }
 }
 
 
@@ -30,11 +33,15 @@
     margin-left: 3px;
 }
 
-.caption__text-word:hover{
+.caption-first .caption__text-word:hover{
     background-color: bisque;
     cursor: pointer;
 }
 
 .caption__info{
     color: $text-gray-dark;
+}
+
+.caption__unblured{
+    filter: blur(0) !important;
 }

@@ -37,20 +37,17 @@ export class YoutubeService {
     this.currentPlayTimeSubject.next(time);
   }
 
-  private keyboardEventSubject = new Subject<KeyboardEvent>();
-  keyboardEvents$ = this.keyboardEventSubject.asObservable();
-
-  setKeyboardEvent(event: KeyboardEvent){
-    console.log("setr evenet, ", event)
-    this.keyboardEventSubject.next(event)
-  }
-
   setYoutubePlayer(player: YouTubePlayer | null): void{
     this.youtubePlayer = player;
   }
 
   playVideo(){
     this.youtubePlayer?.playVideo();
+  }
+
+  pauseVideo(){
+    console.log("pause video")
+    this.youtubePlayer?.pauseVideo();
   }
 
   setPlayerState(value: boolean){

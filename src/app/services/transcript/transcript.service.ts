@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, fromEvent, map, startWith, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, debounceTime, distinctUntilChanged, filter, fromEvent, map, startWith, switchMap, take, tap } from 'rxjs';
 import { YoutubeService } from '../youtube/youtube.service';
 import { combineLatest } from 'rxjs'
 import Transcript  from '../../Models/transcript'
 import Caption  from '../../Models/Caption'
+import { Controls } from '../../Models/controls';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +17,17 @@ export class TranscriptService {
   highlightedTranscript: any = null;
 
   keyDowns$ = fromEvent<KeyboardEvent>(document, 'keydown');
+  isKeyHandled = true;
 
 
   constructor(private http: HttpClient, private youtubeService: YoutubeService) { }
 
+  controlsSubject = new BehaviorSubject<Controls>({showSecondCaption: false, unblurSecondCaption: false, pauseAfterCaption: false});
+  controls$ = this.controlsSubject.asObservable();
+
+  setControls(value:Controls): void{
+    this.controlsSubject.next(value)
+  }
 
   transcript$ = this.youtubeService.video_id$.pipe(
     switchMap(videoId => {
@@ -44,76 +52,96 @@ export class TranscriptService {
 
   timedCaption$ = combineLatest(
     this.youtubeService.currentPlayTime$,
-    this.transcript$, 
+    this.transcript$,
+    this.controls$ 
   ).pipe(
-    map(([playTime, transcript]) => {
+    map(([playTime, transcript, control]) => {
       let firstCaptionIndex = -1;
       let secondCaptionIndex = -1;
-
+      playTime = Math.round(playTime * 1000)/1000;
+      
       // the loops will always start from the beginning of the transcrip, if it could be improved that it doesn't always do that, would be nice.
       for (let i = 0; i < transcript.firstTranscript.length; i++) {
-        if (playTime >= transcript.firstTranscript[i].start) {
+        if (playTime >= transcript.firstTranscript[i].start && playTime <= (transcript.firstTranscript[i].start + transcript.firstTranscript[i].duration)) {
             firstCaptionIndex = i;
-        } else {
-            break;
+          } 
         }
-      }
 
       for (let i = 0; i < transcript.secondTranscript.length; i++) {
-        if (playTime >= transcript.secondTranscript[i].start) {
+        if (playTime >= transcript.secondTranscript[i].start && playTime <= (transcript.secondTranscript[i].start + transcript.secondTranscript[i].duration)) {
           secondCaptionIndex = i;
-        } else {
-            break;
-        }
+        } 
       }
 
       return {
+        firstTranscriptList: transcript.firstTranscript,
+        secondTranscriptList: transcript.secondTranscript,
         firstTranscript: transcript.firstTranscript[firstCaptionIndex],
         secondTranscript: transcript.secondTranscript[secondCaptionIndex],
         firstCaption: transcript.firstTranscript[firstCaptionIndex]?.text.split(' '),
         secondCaption: transcript.secondTranscript[secondCaptionIndex]?.text.split(' '),
         firstIndex: firstCaptionIndex,
         secondIndex: secondCaptionIndex,
-        isGenerated: transcript.first_is_generated
+        isGenerated: transcript.first_is_generated,
+        isSecondGenerated: transcript.second_is_generated,
+        control: control
+      }
+    }),
+    distinctUntilChanged((prev, curr) => prev.firstIndex === curr.firstIndex)
+  )
+
+
+  timedCaptionWithEvents$ = combineLatest(
+    this.keyDowns$.pipe(
+      startWith({ key: null }),
+      tap(() => this.isKeyHandled = false)
+      ),
+    this.timedCaption$
+  ).pipe(
+    map(([event, transcript]) => {
+      console.log("sfdafdsaf");
+
+      let firstIndex = transcript.firstIndex;
+      let secondIndex = transcript.secondIndex;
+
+      if(!this.isKeyHandled){
+        switch (event.key) {
+          case 'ArrowLeft':
+            --firstIndex;
+            --secondIndex;
+            console.log("yt left ",transcript.firstTranscriptList[firstIndex]);
+            this.youtubeService.seekVideoTo(transcript.firstTranscriptList[firstIndex]?.start);
+            this.isKeyHandled = true;
+            break;
+          case 'ArrowRight':
+            ++firstIndex;
+            ++secondIndex;
+            this.youtubeService.seekVideoTo(transcript.secondTranscriptList[secondIndex]?.start)
+            console.log("yt right ", transcript.secondTranscriptList[secondIndex]);
+            this.isKeyHandled = true;
+
+            break;
+          case ' ':
+            console.log("yt space");
+            this.youtubeService.playHandler()
+            this.isKeyHandled = true;
+            break;
+          default:
+            break;
+        }
+      }
+
+      return {
+        ...transcript,
+        firstTranscript: transcript.firstTranscriptList[firstIndex],
+        secondTranscript: transcript.secondTranscriptList[secondIndex],
+        firstCaption: transcript.firstTranscriptList[firstIndex]?.text.split(' '),
+        secondCaption: transcript.secondTranscriptList[secondIndex]?.text.split(' '),
+        firstIndex: firstIndex,
+        secondIndex: secondIndex
       }
     })
   )
-
-  // timedCaptionWithEvents$ = combineLatest(
-  //   this.keyDowns$,
-  //   this.transcript$,
-  //   this.youtubeService.currentPlayTime$,
-  // ).pipe(
-  //   map(([event, transcript, playTime]) => {
-  //     let currentCaptionIndex = transcript.firstTranscript.findIndex((caption:Caption) => caption.start <= playTime && playTime <= (caption.start + caption.duration)) || -1;
-
-  //     switch (event.key) {
-  //       case 'ArrowLeft':
-  //         currentCaptionIndex -= 1;
-  //         console.log("yt left");
-  //         this.youtubeService.seekVideoTo(transcript.firstTranscript[currentCaptionIndex]?.start)
-  //         break;
-  //       case 'ArrowRight':
-  //         currentCaptionIndex += 1;
-  //         this.youtubeService.seekVideoTo(transcript.firstTranscript[currentCaptionIndex]?.start)
-  //         console.log("yt right");
-  //         break;
-  //       case ' ':
-  //         console.log("yt space");
-  //         this.youtubeService.playHandler()
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //     return {
-  //       firstTranscript: transcript.firstTranscript,
-  //       secondTranscript: transcript.secondTranscript,
-  //       firstCaption: transcript.firstTranscript[currentCaptionIndex]?.text.split(' '),
-  //       secondCaption: transcript.secondTranscript[currentCaptionIndex]?.text.split(' '),
-  //       index: currentCaptionIndex
-  //     }
-  //   })
-  // )
 
 
   // updateCaption(automatic: boolean = true){

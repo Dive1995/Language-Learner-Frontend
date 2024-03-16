@@ -14,7 +14,17 @@ export class CaptionsComponent implements OnInit{
   transcript?: {transcript: [{text:string,start:number, duration:number}], is_generated: boolean};
   highlightedTranscript: any = null;
 
-  transcript$ = this.transcriptService.timedCaption$
+  transcript$ = this.transcriptService.timedCaptionWithEvents$.pipe(
+    tap(value => {
+      console.log(value)
+      if(value.control.pauseAfterCaption && value.firstTranscript){
+        setTimeout(() => {
+          this.youtubeService.pauseVideo();
+        }, value.firstTranscript?.duration * 1000)
+      }
+    })
+  )
+  controls$ = this.transcriptService.controls$.pipe(tap(value => console.log(value)))
 
   constructor(
     private transcriptService: TranscriptService, 

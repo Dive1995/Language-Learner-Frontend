@@ -44,7 +44,7 @@ export class LearnComponent {
 
 
   ngOnInit() {
-    this.youtubeService.setVideoId('F6khA8eZaD4')
+    this.youtubeService.setVideoId('PMj9kUPrnBk')
   }  
 
 
@@ -57,16 +57,4 @@ export class LearnComponent {
       this.context = result;
     })      
   }
-
-
-
-@HostListener('window:keydown', ['$event'])
-handleKeyboardEvents(event: KeyboardEvent){
-
-  if(event.metaKey || event.ctrlKey){
-    return;  
-  }
-
-  this.youtubeService.setKeyboardEvent(event);
-}
 }

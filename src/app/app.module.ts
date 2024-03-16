@@ -8,19 +8,25 @@ import { HttpClientModule } from '@angular/common/http';
 import { YtVideoComponent } from './components/yt-video/yt-video.component';
 import { CaptionsComponent } from './components/captions/captions.component';
 import { LearnComponent } from './pages/learn/learn.component';
+import { ControllerComponent } from './components/controller/controller.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     YtVideoComponent,
     CaptionsComponent,
-    LearnComponent
+    LearnComponent,
+    ControllerComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     YouTubePlayerModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

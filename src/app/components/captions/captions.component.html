@@ -5,16 +5,17 @@
       Please note that the following transcript is a generated one, and might not be correct
     </p>
     <div class="caption__container">
-      <span>asfs</span>
-        <p class="caption caption-highlighted" *ngIf="transcript.firstCaption?.length">
-          <span class="caption__text">
+        <div class="caption caption-first" *ngIf="transcript.firstCaption?.length">
+          <p class="caption__text">
             <span class="caption__text-word" *ngFor="let word of transcript.firstCaption" (click)="findWordMeaning(word)">{{word}}</span>
-          </span>
-        </p>
-        <p class="caption caption-highlighted" *ngIf="transcript.secondCaption?.length">
-          <span class="caption__text">
-            <span class="caption__text-word" *ngFor="let word of transcript.secondCaption">{{word}}</span>
-          </span>
-        </p>
+          </p>
+        </div>
+        <div *ngIf="controls$ | async as controls">
+          <div class="caption caption-second" [class.caption__unblured]="controls.unblurSecondCaption" *ngIf="controls.showSecondCaption">
+            <p class="caption__text">
+              <span class="caption__text-word" *ngFor="let word of transcript.secondCaption">{{word}}</span>
+            </p>
+          </div>
+        </div>
     </div>
   </div>

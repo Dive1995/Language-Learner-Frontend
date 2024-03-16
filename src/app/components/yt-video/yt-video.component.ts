@@ -73,7 +73,7 @@ export class YtVideoComponent implements OnInit{
         var currentPlayTime = this.youtubePlayer?.getCurrentTime() ?? 0;
         this.youtubeService.setCurrentPlayTime(currentPlayTime)
         // this.updateCaption()
-      },500)
+      },100)
     }else{
       clearInterval(this.highlightTranscriptInterval);
     }
