@@ -1,4 +1,4 @@
-<div (event.keydown)="handleKeyboardEvents($event)" #youtubePlayerContainer class="youtube-video">
-    <youtube-player *ngIf="videoId$ | async as videoId" #youtubePlayer [height]="videoHeight" [playerVars]="{disablekb: 1}" [width]="videoWidth" videoId={{videoId}} suggestedQuality="small" (stateChange)="onPlayerStateChange($event)"/> 
+<div #youtubePlayerContainer class="youtube-video">
+    <youtube-player *ngIf="videoId$ | async as videoId" #youtubePlayer [height]="videoHeight" [playerVars]="{disablekb: 1, rel: 0}" [width]="videoWidth" videoId={{videoId}} suggestedQuality="small" (stateChange)="onPlayerStateChange($event)"/> 
     <!-- controls: 0, rel: 0 -->
 </div>

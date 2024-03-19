@@ -10,9 +10,11 @@ import { Subscription, combineLatest, startWith, take, tap } from 'rxjs';
 })
 export class ControllerComponent implements OnInit, OnDestroy{
 
-  showSecondCaption = new FormControl(false)
+  showSecondCaption = new FormControl(true)
   unblurSecondCaption= new FormControl(false)
   pauseAfterCaption= new FormControl(false)
+
+  showControl: boolean = true;
 
   controlSubscription?: Subscription;
   
@@ -20,7 +22,7 @@ export class ControllerComponent implements OnInit, OnDestroy{
  
   ngOnInit(): void {
     this.controlSubscription = combineLatest(
-      this.showSecondCaption.valueChanges.pipe(startWith(false)),
+      this.showSecondCaption.valueChanges.pipe(startWith(true)),
       this.unblurSecondCaption.valueChanges.pipe(startWith(false)),
       this.pauseAfterCaption.valueChanges.pipe(startWith(false))
     ).subscribe(([show, unblur, pause]) => this.transcriptService.setControls({

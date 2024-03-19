@@ -23,60 +23,9 @@
 }
 
 .vocabulary__container{
-    border-radius: 24px;
+    border-radius: $border-radius;
     // background-color: $blue;
     flex: 1;
     padding: 20px;
     // width: 100%;
 }
-
-.youtube-video{
-    // margin-top: 100px;
-    margin: 50px auto 0 auto;
-    flex: 3;
-    border-radius: 15px;
-    // background-color: $green;
-    overflow: hidden;
-}
-
-.transcript{
-    border-radius: 24px;
-    overflow: auto;
-    // background-color: $green;
-    text-align: center;
-    height: 400px;
-
-}
-.caption{
-    text-align: center;
-}
-
-
-
-
-
-
-
-
-
-.caption__container{
-    /* background-color: antiquewhite; */
-    margin-bottom: 30px;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.caption{
-    padding: 10px;
-    font-size: 20px;
-    display: flex;
-    color:gray;
-}
-
-.caption-highlighted{
-    color: black;
-    background-color: $text-gray-light;
-    border-radius: 5px;
-    padding: 10px;
-}
-

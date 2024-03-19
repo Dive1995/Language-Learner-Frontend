@@ -7,11 +7,21 @@
     <div class="caption__container">
         <div class="caption caption-first" *ngIf="transcript.firstCaption?.length">
           <p class="caption__text">
-            <span class="caption__text-word" *ngFor="let word of transcript.firstCaption" (click)="findWordMeaning(word)">{{word}}</span>
+            <span class="caption__text-word" *ngFor="let word of transcript.firstCaption; let index = index" (click)="findWordMeaning(word, index)">
+                <span *ngIf="wordMeaning$ | async as meaning">
+                  <span class="word-meaning" *ngIf="clickedWordIndex == index && clickedWord === word">
+                    <span *ngIf="!meaning.input || meaning.input !== word">
+                      <i class='bx bx-loader'></i>
+                    </span>
+                    <span *ngIf="meaning.input === word">{{meaning.translation}}</span>
+                  </span>
+                </span>
+              {{word}}
+            </span>
           </p>
         </div>
         <div *ngIf="controls$ | async as controls">
-          <div class="caption caption-second" [class.caption__unblured]="controls.unblurSecondCaption" *ngIf="controls.showSecondCaption">
+          <div class="caption caption-second" [class.caption__unblured]="controls.unblurSecondCaption" *ngIf="controls.showSecondCaption && transcript.secondCaption?.length">
             <p class="caption__text">
               <span class="caption__text-word" *ngFor="let word of transcript.secondCaption">{{word}}</span>
             </p>

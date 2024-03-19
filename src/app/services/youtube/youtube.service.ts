@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { YouTubePlayer } from '@angular/youtube-player';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -55,15 +55,13 @@ export class YoutubeService {
   }
 
   playHandler(){
-    // if the player is playing pause it
-    // if paused pllay it
-    const player: any = this.youtubePlayer;
-    console.log("play handler")
-    // if(this.isPlaying$.subscribe()) {
-    //   player.pauseVideo();
-    // }else{
-    //   player.playVideo();  
-    // }
+    this.isPlaying$.pipe(take(1)).subscribe(value =>  {
+      if(value) {
+        this.youtubePlayer?.pauseVideo();
+      }else{
+        this.youtubePlayer?.playVideo();  
+      }
+    })
   }
   
   seekVideoTo(timestamp: number){

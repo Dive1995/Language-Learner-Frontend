@@ -32,29 +32,12 @@ export class LearnComponent {
     'Content-Type': 'application/json'
   });
 
-  wordMeaning$ = this.vocabularyService.wordMeaning$;
-
 
   constructor(
-    private http: HttpClient, 
-    private transcriptService: TranscriptService, 
-    private vocabularyService: VocabularyService, 
-    private changeDetectorRef: ChangeDetectorRef,
     private youtubeService: YoutubeService){}
 
 
   ngOnInit() {
-    this.youtubeService.setVideoId('PMj9kUPrnBk')
+    this.youtubeService.setVideoId('rv5yBK_hKWc')
   }  
-
-
-  //TODO: move to vocabulary service
-  getWordTranslation(word: string){
-    word = word.replace(/[^a-zA-Z0-9]/g, '');
-    this.http.post<any>('http://127.0.0.1:5000/vocabulary/context',{
-      "word":word
-    }).subscribe(result => {
-      this.context = result;
-    })      
-  }
 }

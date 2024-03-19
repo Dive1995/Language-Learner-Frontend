@@ -1,37 +1,46 @@
 @import '../../../variables';
 
+.transcript{
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
 .caption__container{
     /* background-color: antiquewhite; */
     margin-bottom: 30px;
     max-width: 600px;
     width: fit-content;
     margin: 0 auto;
-}
 
-.caption{
-    font-size: 18px;
-    color: black;
-    background-color: $text-gray-light;
-    border-radius: 5px;
-}
+    .caption{
+        font-size: 18px;
+        color: black;
+        background-color: $text-gray-light;
+        border-radius: $border-radius;
 
-.caption__text{
-    text-align: center;
-    padding: 5px;
-}
+        &__text{
+            text-align: center;
+            padding: 10px;
 
-.caption-second{
-    filter: blur(8px);
+            &-word{
+                margin-left: 3px;
+                position: relative;
+            }
+        }
+    }
 
-    &:hover{
-        filter: blur(0);
+    .caption-second{
+        filter: blur(8px);
+    
+        &:hover{
+            filter: blur(0);
+        }
     }
 }
 
 
-.caption__text-word{
-    margin-left: 3px;
-}
+
+
 
 .caption-first .caption__text-word:hover{
     background-color: bisque;
@@ -44,4 +53,16 @@
 
 .caption__unblured{
     filter: blur(0) !important;
+}
+
+.word-meaning{
+    background-color: gray;
+    color: white;
+    position: absolute;
+    top: -35px;
+    left: 0;
+    right:0;
+    width: fit-content;
+    padding: 5px;
+    border-radius: $border-radius;
 }

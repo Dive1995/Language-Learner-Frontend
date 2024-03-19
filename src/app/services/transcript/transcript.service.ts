@@ -40,15 +40,6 @@ export class TranscriptService {
         });
       })
     );
-  
-
-  // transcript$ = this.http.post<Transcript>(this._baseUrl,{
-  //     "video_id": 'F6khA8eZaD4', //this.youtubeService.video_id$,
-  //     "lang": {
-  //       "first": ["de", "de-DE"],
-  //       "second": ["en"]
-  //     } 
-  //   }).pipe(take(1))
 
   timedCaption$ = combineLatest(
     this.youtubeService.currentPlayTime$,
@@ -99,7 +90,6 @@ export class TranscriptService {
     this.timedCaption$
   ).pipe(
     map(([event, transcript]) => {
-      console.log("sfdafdsaf");
 
       let firstIndex = transcript.firstIndex;
       let secondIndex = transcript.secondIndex;
@@ -109,20 +99,21 @@ export class TranscriptService {
           case 'ArrowLeft':
             --firstIndex;
             --secondIndex;
-            console.log("yt left ",transcript.firstTranscriptList[firstIndex]);
             this.youtubeService.seekVideoTo(transcript.firstTranscriptList[firstIndex]?.start);
             this.isKeyHandled = true;
             break;
           case 'ArrowRight':
             ++firstIndex;
             ++secondIndex;
-            this.youtubeService.seekVideoTo(transcript.secondTranscriptList[secondIndex]?.start)
-            console.log("yt right ", transcript.secondTranscriptList[secondIndex]);
+            this.youtubeService.seekVideoTo(transcript.firstTranscriptList[firstIndex]?.start)
             this.isKeyHandled = true;
-
+            break;
+          case 'R':
+          case 'r':
+            this.youtubeService.seekVideoTo(transcript.firstTranscriptList[firstIndex]?.start)
+            this.isKeyHandled = true;
             break;
           case ' ':
-            console.log("yt space");
             this.youtubeService.playHandler()
             this.isKeyHandled = true;
             break;
@@ -142,42 +133,4 @@ export class TranscriptService {
       }
     })
   )
-
-
-  // updateCaption(automatic: boolean = true){
-  //   if(automatic){
-  //     this.indexOfCurrentTranscript = this.transcript?.transcript.findIndex(caption => caption.start <= this.currentPlayTime && this.currentPlayTime <= (caption.start + caption.duration)) || -1;
-  //   }
-  
-  //   this.highlightedTranscript = this.indexOfCurrentTranscript >= 0 ? this.transcript?.transcript[this.indexOfCurrentTranscript] : null;
-  // }
-  
-  // switchTranscriptTo(track: string): void {
-  //   if (!this.transcript) {
-  //     return;
-  //   }
-  
-  //   switch (track) {
-  //     case 'prev':
-  //       if (this.indexOfCurrentTranscript > 0) {
-  //         --this.indexOfCurrentTranscript;
-  //       }
-  //       break;
-  
-  //     case 'next':
-  //       if (this.indexOfCurrentTranscript < this.transcript.transcript.length - 1) {
-  //         ++this.indexOfCurrentTranscript;
-  //       }
-  //       break;
-  
-  //     case 'repeat':
-  //       break;
-  
-  //     default:
-  //       return;
-  //   }
-  
-  //   this.updateCaption(false);
-  //   this.youtubeService.seekVideoTo(this.highlightedTranscript?.start);
-  // }
 }

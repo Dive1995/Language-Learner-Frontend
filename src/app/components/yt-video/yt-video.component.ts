@@ -60,11 +60,6 @@ export class YtVideoComponent implements OnInit{
     window.removeEventListener('resize', this.onResize);
   }
 
-  // @HostListener('window:keydown', ['$event'])
-  handleKeyboardEvents(event: any){
-    
-  }
-
   onPlayerStateChange(event:any){
     this.youtubeService.setPlayerState(event.data == 1 ? true : false);
     //TODO:create a seperate fn for updating the transcript while playing (need to check if we can, maybe we can;t bcz of the timer)
