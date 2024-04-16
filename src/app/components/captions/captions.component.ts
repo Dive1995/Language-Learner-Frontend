@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranscriptService } from '../../services/transcript/transcript.service';
 import { VocabularyService } from '../../services/vocabulary/vocabulary.service';
 import { YoutubeService } from '../../services/youtube/youtube.service';
@@ -23,7 +23,6 @@ export class CaptionsComponent implements OnInit{
 
   transcript$ = this.transcriptService.timedCaptionWithEvents$.pipe(
     tap(value => {
-      console.log(value)
       if(value.control.pauseAfterCaption && value.firstTranscript){
         setTimeout(() => {
           this.youtubeService.pauseVideo();
@@ -31,11 +30,11 @@ export class CaptionsComponent implements OnInit{
       }
     })
   )
-  controls$ = this.transcriptService.controls$.pipe(tap(value => console.log(value)))
+  controls$ = this.transcriptService.controls$
 
   wordMeaning$ = this.vocabularyService.wordMeaning$;
 
-  pageClickSubscription = fromEvent(document.getElementsByClassName('caption__text-word'), 'click').subscribe(() => console.log("adsf"));
+  pageClickSubscription = fromEvent(document.getElementsByClassName('caption__text-word'), 'click').subscribe();
 
   constructor(
     private transcriptService: TranscriptService, 
@@ -58,14 +57,12 @@ export class CaptionsComponent implements OnInit{
   }
 
   findWordMeaning(value: string, index: number){
-   console.log(value); 
    this.clickedWord = value;
    this.clickedWordIndex = -1;
    this.youtubeService.pauseVideo();
    this.vocabularyService.setSearchingWord(value)
    this.clickedWordIndex = index;
    this.shouldShowAddOption(value);
-  //  this.vocabularyService.getWordMeaning(value).subscribe(value => console.log("result: ", value)); 
   }
 
   closeWordMeaning(){
@@ -79,7 +76,6 @@ export class CaptionsComponent implements OnInit{
     const vocabularyList = localStorage.getItem("vocabularyList")
     if(vocabularyList){
       const vocabulary = JSON.parse(vocabularyList);
-      console.log("vocabularyObject ",vocabulary)
       this.showWordAdd = vocabulary.filter((item: any) => item.input === word).length > 0 ? false : true;
     }else{
       this.showWordAdd = true;

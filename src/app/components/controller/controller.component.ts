@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { TranscriptService } from '../../services/transcript/transcript.service';
-import { Subscription, combineLatest, startWith, take, tap } from 'rxjs';
+import { Subscription, combineLatest, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-controller',

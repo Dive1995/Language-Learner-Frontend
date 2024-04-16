@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, debounceTime, distinctUntilChanged, filter, fromEvent, map, startWith, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, fromEvent, map, startWith, switchMap, tap } from 'rxjs';
 import { YoutubeService } from '../youtube/youtube.service';
 import { combineLatest } from 'rxjs'
 import Transcript  from '../../Models/transcript'
-import Caption  from '../../Models/Caption'
 import { Controls } from '../../Models/controls';
 
 @Injectable({
@@ -51,7 +50,6 @@ export class TranscriptService {
       let secondCaptionIndex = -1;
       playTime = Math.round(playTime * 1000)/1000;
       
-      // the loops will always start from the beginning of the transcrip, if it could be improved that it doesn't always do that, would be nice.
       for (let i = 0; i < transcript.firstTranscript.length; i++) {
         if (playTime >= transcript.firstTranscript[i].start && playTime <= (transcript.firstTranscript[i].start + transcript.firstTranscript[i].duration)) {
             firstCaptionIndex = i;

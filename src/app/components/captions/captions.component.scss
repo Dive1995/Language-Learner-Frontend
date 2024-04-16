@@ -6,15 +6,12 @@
 }
 
 .caption__container{
-    /* background-color: antiquewhite; */
     margin-bottom: 30px;
-    // max-width: 600px;
     width: fit-content;
     margin: 0 auto;
 
     .caption{
         color: black;
-        // background-color: $text-gray-light;
         border-radius: $border-radius;
 
         &__text{

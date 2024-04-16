@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, combineLatest, distinctUntilChanged, filter, map, merge, mergeMap, of, scan, shareReplay, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, distinctUntilChanged, map, of, shareReplay, switchMap } from 'rxjs';
 import { WordMeaning } from '../../Models/WordMeaning';
 import { AuthService } from '../auth/auth.service';
 import { YoutubeService } from '../youtube/youtube.service';
@@ -16,7 +16,6 @@ export class VocabularyService {
   something = this.youtubeService.video_id$.pipe()
 
   vocabularyLocalList = this.authService.getUser()?.videoHistory || [];
-  // vocabularyInitialState = this.vocabularyLocalList ? JSON.parse(this.vocabularyLocalList) : []
   
   vocabularyListSubject = new BehaviorSubject<VideoHistory[]>(this.vocabularyLocalList);
   vocabularyList$ = this.vocabularyListSubject.asObservable();
@@ -25,14 +24,10 @@ export class VocabularyService {
   constructor(private http: HttpClient, private youtubeService: YoutubeService, private authService: AuthService) {}
 
   addWordToVocabulary(vocabulary: WordMeaning, videoId: string){
-    console.log("add meaning: ", vocabulary);
 
     const user = this.authService.getUser();
 
     if(user){
-      console.log("user : ", user)
-      const vocabularyList = user.videoHistory.find(history => history.video_id === videoId)?.vocabList || [];
-      
       this.updateVocabularyListInDB(user.id, videoId, vocabulary).subscribe((updatedUser) => {
         this.authService.setUser(updatedUser)
 
@@ -54,16 +49,13 @@ export class VocabularyService {
   findMeaning$ = this.findMeaningSubject.asObservable();
 
   setSearchingWord(word: string){
-    console.log("set search: ", word)
     this.findMeaningSubject.next(word)
   }  
 
   wordMeaning$ = this.findMeaning$.pipe(
-    // mergeMap((word) => this.http.post<any>('http://127.0.0.1:5000/vocabulary/context',{"word":word})),
     distinctUntilChanged((prev, curr) => prev === curr),
     switchMap((word) => {
 
-      //  check if the word is already on any list
       const user = this.authService.getUser();
       if(user){
         var filteredVocab: WordMeaning | null = null
@@ -74,13 +66,8 @@ export class VocabularyService {
         })
         if(filteredVocab) return of(filteredVocab);
       }
-      // if it is show the meaning
-      // if not search meaning
-
-      console.log('api call')
       return this.http.post<any>(`${this.baseUrl}/vocabulary/translation`,{"input":word, "to":"en", "from":"de"})
       .pipe(map((response) => {
-        console.log(response)
         let contextResultsList = response?.contextResults.results.slice(0,5).map((context:any) => {
           context.sourceExamples = context.sourceExamples.slice(0,5);
           context.targetExamples = context.targetExamples.slice(0,5);
@@ -89,11 +76,6 @@ export class VocabularyService {
         return {contextResults: contextResultsList, input: response.input[0], translation: response.translation[0]};
       }))
     }),
-    tap((meaning) => console.log("meaning: ", meaning)),
     shareReplay(1),
   )
-
-  // getWordMeaning(word: string): Observable<any>{
-  //   return this.http.post<any>('http://127.0.0.1:5000/vocabulary/context',{"word":word})
-  // }
 }

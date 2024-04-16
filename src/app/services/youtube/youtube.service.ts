@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { YouTubePlayer } from '@angular/youtube-player';
 import { BehaviorSubject, Observable, Subject, take } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,9 @@ export class YoutubeService {
 
   private youtubePlayer: YouTubePlayer | null = null;
   
-  // current state of the video player - playing or paused/stopped
   private videoPlayingSubject = new BehaviorSubject<boolean>(false);
   isPlaying$ = this.videoPlayingSubject.asObservable();
 
-  // current video_id of the playing video
   private videoIdSubject = new BehaviorSubject<string>('');
   video_id$ = this.videoIdSubject.asObservable();
 
@@ -46,7 +45,6 @@ export class YoutubeService {
   }
 
   pauseVideo(){
-    console.log("pause video")
     this.youtubePlayer?.pauseVideo();
   }
 
@@ -65,17 +63,13 @@ export class YoutubeService {
   }
   
   seekVideoTo(timestamp: number){
-    console.log("Seek video: ", timestamp);
     const player: any = this.youtubePlayer;
     player.seekTo(timestamp, true);
     player.playVideo();
   }
 
-  // calling YouTubee Data V3 api
-  //TODO: move api-key to environment variable
   getVideoListFromYouTube(search: string): Observable<any>{
     const validatedSearch = search.split(' ').join("%20");
-    console.log("validatedSearch ",validatedSearch);
-    return this.http.get(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyCaZskiR9b7_dWDDg4-3V6xa8NCy4OdW4o&q=${validatedSearch}&type=video&part=snippet&relevanceLanguage=de&maxResults=50&videoEmbeddable=true`)
+    return this.http.get(`https://www.googleapis.com/youtube/v3/search?key=${environment.GOOGLE_API_KEY}&q=${validatedSearch}&type=video&part=snippet&relevanceLanguage=de&maxResults=50&videoEmbeddable=true`)
   }
 }

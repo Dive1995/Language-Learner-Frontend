@@ -11,9 +11,6 @@
                         <div class="meaning">
                             <p class="meaning-item" *ngFor="let context of vocabulary.contextResults" (click)="selectContext(context)">
                                 {{context.translation}}
-                                <!-- <p *ngFor="let sourceExample of context.sourceExamples">
-                                    {{sourceExample}}
-                                </p> -->
                             </p>
                         </div>
                         <div class="contexts" *ngIf="selectedContext">

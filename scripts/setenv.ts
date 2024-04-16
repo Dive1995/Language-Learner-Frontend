@@ -8,7 +8,7 @@ require('dotenv').config();
 const environment = argv.environment;
 const isProduction = environment === 'prod';
 
-if (!process.env['GOOGLE_CLIENT_ID']) {
+if (!process.env['GOOGLE_CLIENT_ID'] || !process.env['GOOGLE_API_KEY']) {
     console.error('All the required environment variables were not provided!');
     process.exit(-1);
  }
@@ -20,7 +20,8 @@ const targetPath = isProduction
 const environmentFileContent = `
 export const environment = {
    production: ${isProduction},
-   GOOGLE_CLIENT_ID: "${process.env['GOOGLE_CLIENT_ID']}"
+   GOOGLE_CLIENT_ID: "${process.env['GOOGLE_CLIENT_ID']}",
+   GOOGLE_API_KEY: "${process.env['GOOGLE_API_KEY']}"
 };
 `;
 

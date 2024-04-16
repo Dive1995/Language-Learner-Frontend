@@ -27,7 +27,6 @@ export class VocabularyComponent implements OnInit{
 
   expandMeaning(vocabulary: WordMeaning){
     this.expandedWord = vocabulary;
-    console.log("expand: ", vocabulary)
   }
 
   selectContext(context: Results){

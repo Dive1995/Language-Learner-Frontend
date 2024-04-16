@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import User from '../../Models/User';
 import { HttpClient } from '@angular/common/http';
 
@@ -45,14 +45,6 @@ export class AuthService {
 
   logIn(token: any){
     return this.decodeToken(token.credential);
-    
-    // this.getOrAddUser(user).subscribe(response => {
-    //   console.log(response)
-    //   this.userSubject.next(response);
-    //   const userString = JSON.stringify(response);
-    //   localStorage.setItem("user", userString);
-    // }, 
-    // (err) => console.log("Sign in error: ", err))
   }
 
   logOut(){

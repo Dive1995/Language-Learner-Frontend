@@ -1,7 +1,6 @@
 @import '../../../variables';
 
 .vocabulary__container{
-    // background-color: $bg-dark;
     border-radius: $border-radius;
     overflow: auto;
     height: 100%;
@@ -48,7 +47,6 @@
             display: none;
             .meaning{
                 display: flex;
-                // justify-content: space-between;
                 gap: 5px;
                 align-items: center;
                 flex-wrap: wrap;
@@ -59,11 +57,6 @@
                     padding: 5px;
                 }
             }
-
-            .contexts{
-
-            }
-
         }
 
         .expanded{
