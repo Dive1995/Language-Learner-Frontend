@@ -1,16 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { YouTubePlayer } from '@angular/youtube-player';
-import { BehaviorSubject, Subject, take } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 
-// reasons for yt-service: 
-// 1. to control from the main page (keyboard events)
-// 2. match transcript with video play time
-// 3. get & set video_id
 export class YoutubeService {
+
+  constructor(private http: HttpClient){}
+
   private youtubePlayer: YouTubePlayer | null = null;
   
   // current state of the video player - playing or paused/stopped
@@ -69,5 +69,13 @@ export class YoutubeService {
     const player: any = this.youtubePlayer;
     player.seekTo(timestamp, true);
     player.playVideo();
+  }
+
+  // calling YouTubee Data V3 api
+  //TODO: move api-key to environment variable
+  getVideoListFromYouTube(search: string): Observable<any>{
+    const validatedSearch = search.split(' ').join("%20");
+    console.log("validatedSearch ",validatedSearch);
+    return this.http.get(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyCaZskiR9b7_dWDDg4-3V6xa8NCy4OdW4o&q=${validatedSearch}&type=video&part=snippet&relevanceLanguage=de&maxResults=50&videoEmbeddable=true`)
   }
 }

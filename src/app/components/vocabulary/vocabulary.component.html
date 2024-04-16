@@ -1,0 +1,35 @@
+<div class="vocabulary__container">
+    <ng-container *ngIf="user && vocabularyList$ | async as videoHistories">
+        <div *ngFor="let videoHistory of videoHistories">
+            <ng-container *ngIf="videoHistory.video_id === videoId;">
+                <div class="vocabulary" *ngFor="let vocabulary of videoHistory.vocabList" (click)="expandMeaning(vocabulary)">
+                    <p class="vocabulary__meaning">
+                        <span>{{vocabulary.input}} - {{vocabulary.translation}}</span>
+                        <i class='bx bxs-chevron-down'></i>
+                    </p>
+                    <div class="expanded-meaning" [ngClass]="vocabulary.input === expandedWord?.input ? 'expanded' : ''">
+                        <div class="meaning">
+                            <p class="meaning-item" *ngFor="let context of vocabulary.contextResults" (click)="selectContext(context)">
+                                {{context.translation}}
+                                <!-- <p *ngFor="let sourceExample of context.sourceExamples">
+                                    {{sourceExample}}
+                                </p> -->
+                            </p>
+                        </div>
+                        <div class="contexts" *ngIf="selectedContext">
+                            <p *ngFor="let sourceExample of selectedContext.sourceExamples">
+                                {{sourceExample}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!user">
+        <div class="login-message">
+            <p>Sign in for free to save the words you learn and remember them next time.</p>
+            <a class="btn sign-in" routerLink="/login">Sign In</a>
+        </div>
+    </ng-container>
+</div>

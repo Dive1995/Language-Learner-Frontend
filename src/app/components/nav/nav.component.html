@@ -1,0 +1,11 @@
+<nav class="nav-container">
+    <a routerLink="/" class="logo">
+        <!-- <h1>Language Learner</h1> -->
+        <img src="../../../assets/Logo.png" alt="">
+    </a>
+    <span class="nav-menu">
+        <p *ngIf="user" class="">Hi {{user.given_name}}!</p>
+        <a *ngIf="!user" class="btn sign-in" routerLink="/login">Sign In</a>
+        <a *ngIf="user" class="btn sign-out" (click)="logOut()">Log out</a>
+    </span>
+</nav>

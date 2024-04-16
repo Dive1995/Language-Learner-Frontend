@@ -1,12 +1,12 @@
 export interface WordMeaning{
     input: string,
     translation: string,
-    contextResults: [results]
+    contextResults: Results[]
 }
 
-interface results{
+export interface Results{
     partOfSpeech: string,
-    sourceExamples: [string],
-    targetExamples: [string],
+    sourceExamples: string[],
+    targetExamples: string[],
     translation: string
 }

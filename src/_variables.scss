@@ -3,19 +3,30 @@ $feminine-color:#ef233c; // #ECA793
 $neuter-color:#03071e; // #292929
 $masculine-color:#ffba08; //#f48c06 #faa307 #EEDEA5
 
+$error-color: #ef233c;
+
 $blue: #CEDBFD;
-$green: #BDD6C2;
+$green: #808080;
 
 $text-black: #1B1B1B;
 $text-gray-dark: #404040;
 $text-gray: #808080;
 $text-gray-light: #C0C0C0;
 
+$bg-main:#F3F3F1;
 $bg-dark: #101828;
+
 $bg-gray: #ddd;
 $bg-gray-light: #F5F5F7;
 $bg-gray-dark: #808080;
 
+$bg-primary: #565656;
+$bg-secondary: rgb(200, 216, 244);
+
+
 $action-color: #70EE91;
 
+
+// size
 $border-radius: 10px;
+$page-max-width: 1600px;

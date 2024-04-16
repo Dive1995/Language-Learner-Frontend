@@ -10,6 +10,13 @@ import { CaptionsComponent } from './components/captions/captions.component';
 import { LearnComponent } from './pages/learn/learn.component';
 import { ControllerComponent } from './components/controller/controller.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { VocabularyComponent } from './components/vocabulary/vocabulary.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RouterModule } from '@angular/router';
+import { HomeComponent } from './pages/home/home.component';
+import { AppLayoutComponent } from './pages/app-layout/app-layout/app-layout.component';
+import { NavComponent } from './components/nav/nav.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 
 @NgModule({
@@ -18,7 +25,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     YtVideoComponent,
     CaptionsComponent,
     LearnComponent,
-    ControllerComponent
+    ControllerComponent,
+    VocabularyComponent,
+    LoginComponent,
+    HomeComponent,
+    AppLayoutComponent,
+    NavComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +39,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     YouTubePlayerModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   providers: [],
   bootstrap: [AppComponent]

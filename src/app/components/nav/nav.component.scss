@@ -1,0 +1,37 @@
+@import '../../../variables';
+
+.nav-container{
+    max-width: $page-max-width;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 50px;
+
+    .logo{
+        cursor: pointer;
+        img{
+            height: 100px;
+        }
+    }
+
+    .nav-menu{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+
+        .sign-in{
+            color: $text-gray-dark;
+            border-radius: $border-radius;
+            background-color: $action-color;
+        }
+    
+        .sign-out{
+            color: #fff;
+            border-radius: $border-radius;
+            background-color: $bg-gray-dark;
+        }
+    }
+
+}

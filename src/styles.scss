@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap');
+@import './variables';
 
 /* You can add global styles to this file, and also import other style files */
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -26,6 +27,7 @@
   body {
     margin: 0;
     font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: $bg-main;
   }
   
   /**
@@ -350,4 +352,18 @@
   
   [hidden] {
     display: none;
+  }
+
+
+// common styles
+  .btn{
+    text-decoration: none;
+    padding: 10px;
+    cursor: pointer;
+    background: linear-gradient(#0000, rgb(0 0 0/40%)) top/100% 800%;
+    transition: 0.5s;
+
+    &:hover{
+      background-position: bottom;
+    }
   }

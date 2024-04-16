@@ -1,0 +1,32 @@
+<div class="home-container">
+    <div class="search-video">
+        <input type="text" placeholder="Paste a YouTube link here or Search a video" [(ngModel)]="searchText">
+        <button class="search-btn" (click)="searchVideo()">
+            <i class='bx bx-search-alt-2'></i>
+        </button>
+        <p class="search-error" *ngIf="searchError">{{searchError}}</p>
+    </div>
+    <div class="video-history" *ngIf="user && user.videoHistory.length !== 0">
+        <h4>Previously watched</h4>
+        <div class="video__list">
+            <a class="video__list-item" *ngFor="let video of user.videoHistory" [routerLink]="['/learn', video.video_id]">
+                <div class="video-thumbnail">
+                    <img src="https://i.ytimg.com/vi_webp/{{video.video_id}}/maxresdefault.webp" alt="youtube video">
+                </div>
+                <!-- <p class="video-title">{{video.snippet.title}}</p> -->
+            </a>
+        </div>
+    </div>
+    <div class="other-videos">
+        <h4>Videos to watch</h4>
+        <p *ngIf="otherVideoList.length === 0">No videos found.</p>
+        <div class="video__list">
+            <a class="video__list-item" *ngFor="let video of otherVideoList" [routerLink]="['/learn', video.id.videoId]">
+                <div class="video-thumbnail">
+                    <img src={{video.snippet.thumbnails.medium.url}} alt={{video.title}}>
+                </div>
+                <p class="video-title">{{video.snippet.title}}</p>
+            </a>
+        </div>
+    </div>
+</div>

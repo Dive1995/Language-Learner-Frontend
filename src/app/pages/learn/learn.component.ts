@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChi
 import { TranscriptService } from '../../services/transcript/transcript.service';
 import { YoutubeService } from '../../services/youtube/youtube.service';
 import { VocabularyService } from '../../services/vocabulary/vocabulary.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-learn',
@@ -34,10 +35,14 @@ export class LearnComponent {
 
 
   constructor(
-    private youtubeService: YoutubeService){}
+    private youtubeService: YoutubeService, private route: ActivatedRoute, private router: Router){}
 
 
   ngOnInit() {
-    this.youtubeService.setVideoId('rv5yBK_hKWc')
+    const videoId = this.route.snapshot.paramMap.get('id')
+    if(videoId)
+      this.youtubeService.setVideoId(videoId )
+    else
+      this.router.navigate(["/learn"])
   }  
 }

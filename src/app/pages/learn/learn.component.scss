@@ -2,30 +2,43 @@
 
 .youtube__container{
     // background-color: $bg-gray;
-    max-width: 1600px;
+    max-width: $page-max-width;
     margin: 0 auto;
     display: flex;
-    height: 100vh;
+    height: 90vh;
     overflow: hidden;
+    padding: 0px 50px;
 }
 
+.grid-container{
+    // background-color: rgb(223, 125, 125);
+    width: 100%;
+    display: grid;
+    gap: 15px;
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 'video vocabulary' 
+                        'transcript vocabulary';
 
-// .youtube__container{
-//     background-color: black;
-//     display: flex;    
-//     height: 100vh;
-//     overflow: hidden;
-// }
+    .video{
+        grid-area: video;
+        border-radius: $border-radius;
 
-.video__content{
-    flex: 3;
-    margin: 0 50px;
-}
+        // padding: 40px;
+    }
 
-.vocabulary__container{
-    border-radius: $border-radius;
-    // background-color: $blue;
-    flex: 1;
-    padding: 20px;
-    // width: 100%;
+    .vocabulary{
+        grid-area: vocabulary;
+        background-color: $text-gray-light;
+        border-radius: $border-radius;
+        // padding: 40px;
+
+    }
+
+    .transcript{
+        grid-area: transcript;
+        border-radius: $border-radius;
+        background-color: $bg-gray//#C5EFCB;
+        // padding: 40px;
+    }
 }

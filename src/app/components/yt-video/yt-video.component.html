@@ -1,4 +1,5 @@
 <div #youtubePlayerContainer class="youtube-video">
-    <youtube-player *ngIf="videoId$ | async as videoId" #youtubePlayer [height]="videoHeight" [playerVars]="{disablekb: 1, rel: 0}" [width]="videoWidth" videoId={{videoId}} suggestedQuality="small" (stateChange)="onPlayerStateChange($event)"/> 
-    <!-- controls: 0, rel: 0 -->
+    <div id="video" style="height:100%; width:100%;max-width:100%;">
+        <youtube-player *ngIf="videoId$ | async as videoId" #youtubePlayer [height]="videoHeight" [playerVars]="{disablekb: 1, rel: 0}" [width]="videoWidth" videoId={{videoId}} suggestedQuality="small" (stateChange)="onPlayerStateChange($event)"/> 
+    </div>
 </div>

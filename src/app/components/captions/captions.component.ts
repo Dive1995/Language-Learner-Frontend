@@ -3,6 +3,10 @@ import { TranscriptService } from '../../services/transcript/transcript.service'
 import { VocabularyService } from '../../services/vocabulary/vocabulary.service';
 import { YoutubeService } from '../../services/youtube/youtube.service';
 import { fromEvent, tap } from 'rxjs';
+import { WordMeaning } from '../../Models/WordMeaning';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../services/auth/auth.service';
+import User from '../../Models/User';
 
 @Component({
   selector: 'app-captions',
@@ -12,6 +16,10 @@ import { fromEvent, tap } from 'rxjs';
 export class CaptionsComponent implements OnInit{
   clickedWord?: string;
   clickedWordIndex?: number;
+  showWordAdd: boolean = false;
+  showInfo: boolean = true;
+  showLogin: boolean = false;
+  user: User | null = null;
 
   transcript$ = this.transcriptService.timedCaptionWithEvents$.pipe(
     tap(value => {
@@ -32,21 +40,62 @@ export class CaptionsComponent implements OnInit{
   constructor(
     private transcriptService: TranscriptService, 
     private youtubeService: YoutubeService, 
-    private vocabularyService: VocabularyService){}
+    private vocabularyService: VocabularyService,
+    private authService: AuthService,
+    private route: ActivatedRoute
+  ){}
 
   ngOnInit(): void {
-    
+    setTimeout(() => {
+      this.showInfo = false;
+    }, 10000);
+
+    this.user = this.authService.getUser();
+  }
+
+  toggleInfo(){
+    this.showInfo = !this.showInfo;
   }
 
   findWordMeaning(value: string, index: number){
    console.log(value); 
    this.clickedWord = value;
    this.clickedWordIndex = -1;
-   this.vocabularyService.setSearchingWord(value)
    this.youtubeService.pauseVideo();
+   this.vocabularyService.setSearchingWord(value)
    this.clickedWordIndex = index;
-   console.log("clickedWord: ", this.clickedWord); 
-   console.log("clickedWordIndex: ", this.clickedWordIndex); 
+   this.shouldShowAddOption(value);
   //  this.vocabularyService.getWordMeaning(value).subscribe(value => console.log("result: ", value)); 
+  }
+
+  closeWordMeaning(){
+    this.clickedWord = '';
+    this.clickedWordIndex = -1;
+    this.youtubeService.playHandler()
+    this.showLogin = false;
+  }
+
+  shouldShowAddOption(word: string){
+    const vocabularyList = localStorage.getItem("vocabularyList")
+    if(vocabularyList){
+      const vocabulary = JSON.parse(vocabularyList);
+      console.log("vocabularyObject ",vocabulary)
+      this.showWordAdd = vocabulary.filter((item: any) => item.input === word).length > 0 ? false : true;
+    }else{
+      this.showWordAdd = true;
+    }
+  }
+
+  addWord(meaning: WordMeaning){
+    if(this.user){
+      const videoId = this.route.snapshot.paramMap.get('id') || '';
+      this.vocabularyService.addWordToVocabulary(meaning, videoId);
+    }else{
+      this.showLogin = true;
+    }
+  }
+
+  closeLogin(){
+    this.showLogin = false;
   }
 }

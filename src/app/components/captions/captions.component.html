@@ -1,31 +1,38 @@
 <div *ngIf="transcript$ | async as transcript" class="transcript">
-    <!-- TODO: add an info icon, popup this on the first load then hide it, make it clickable-->
-    <p *ngIf="transcript.isGenerated" class="caption__info">
-      <i class='bx bxs-info-circle'></i>
-      Please note that the following transcript is a generated one, and might not be correct
+    <p *ngIf="transcript.isGenerated" class="caption__info" [ngClass]="showInfo ? '' : 'caption__info-hide'">
+      <i class='bx bxs-info-circle' (click)="toggleInfo()"></i>
+      <span class="content" *ngIf="showInfo">Auto Generated transcript.</span>
     </p>
     <div class="caption__container">
         <div class="caption caption-first" *ngIf="transcript.firstCaption?.length">
           <p class="caption__text">
-            <span class="caption__text-word" *ngFor="let word of transcript.firstCaption; let index = index" (click)="findWordMeaning(word, index)">
+            <span class="caption__text-word" *ngFor="let word of transcript.firstCaption; let index = index" (mouseenter)="findWordMeaning(word, index)" (mouseleave)="closeWordMeaning()">
                 <span *ngIf="wordMeaning$ | async as meaning">
-                  <span class="word-meaning" *ngIf="clickedWordIndex == index && clickedWord === word">
-                    <span *ngIf="!meaning.input || meaning.input !== word">
+                  <span class="word-meaning__container" *ngIf="clickedWordIndex == index && clickedWord === word">
+                    <span class="word-meaning" *ngIf="!meaning.input || meaning.input !== word">
                       <i class='bx bx-loader'></i>
                     </span>
-                    <span *ngIf="meaning.input === word">{{meaning.translation}}</span>
+                    <span class="word-meaning" *ngIf="meaning.input === word">
+                      {{meaning.translation}}
+                      <i *ngIf="showWordAdd" class='bx bx-plus-circle' (click)="addWord(meaning); $event.stopPropagation()"></i>
+                    </span>
+                  </span>
+                  <span class="login-prompt" [ngClass]="showLogin ? 'login-prompt-show' : ''" *ngIf="clickedWordIndex == index && clickedWord === word">
+                    <i class='bx bx-x login-close' (click)="closeLogin()"></i>
+                    <p>Sign in to save the word</p>
+                    <a class="btn sign-in" routerLink="/login">Sign In</a>
                   </span>
                 </span>
               {{word}}
             </span>
           </p>
         </div>
-        <div *ngIf="controls$ | async as controls">
+        <ng-container *ngIf="controls$ | async as controls">
           <div class="caption caption-second" [class.caption__unblured]="controls.unblurSecondCaption" *ngIf="controls.showSecondCaption && transcript.secondCaption?.length">
             <p class="caption__text">
               <span class="caption__text-word" *ngFor="let word of transcript.secondCaption">{{word}}</span>
             </p>
           </div>
-        </div>
+        </ng-container>
     </div>
   </div>

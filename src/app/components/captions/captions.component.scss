@@ -8,19 +8,19 @@
 .caption__container{
     /* background-color: antiquewhite; */
     margin-bottom: 30px;
-    max-width: 600px;
+    // max-width: 600px;
     width: fit-content;
     margin: 0 auto;
 
     .caption{
-        font-size: 18px;
         color: black;
-        background-color: $text-gray-light;
+        // background-color: $text-gray-light;
         border-radius: $border-radius;
 
         &__text{
             text-align: center;
             padding: 10px;
+            font-size: 30px;
 
             &-word{
                 margin-left: 3px;
@@ -49,20 +49,81 @@
 
 .caption__info{
     color: $text-gray-dark;
+    margin-left: 50px;
+    font-size: 14px;
+    background-color: #fff;
+    width: fit-content;
+    border-radius: $border-radius;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.caption__info-hide{
+    background-color: transparent;
 }
 
 .caption__unblured{
     filter: blur(0) !important;
 }
 
-.word-meaning{
-    background-color: gray;
+// word meaning styles
+.word-meaning__container{
+    background-color: $bg-dark;
     color: white;
     position: absolute;
-    top: -35px;
+    top: -33px;
     left: 0;
     right:0;
     width: fit-content;
     padding: 5px;
     border-radius: $border-radius;
+    display: inline-block;
+}
+
+.word-meaning{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 18px;
+    padding: 1px;    
+}
+
+.login-prompt{
+    display: none;
+    background-color: white;
+    padding: 15px;
+    position: absolute;
+    top: -127px;
+    left: 0;
+    right: 0;
+    font-size: 13px;
+    border-radius: $border-radius;
+    box-shadow: 0 0 5px 5px rgba(0,0,0,0.1);
+    width: max-content;
+
+    p{
+        margin-bottom: 20px;
+    }
+
+    .sign-in{
+        color: $text-gray-dark;
+        border-radius: $border-radius;
+        background-color: $action-color;
+    }
+
+    .login-close{
+        position: absolute;
+        right: 10px;
+        top: 5px;
+        font-size: 20px;
+        }
+}
+
+.login-prompt-show{
+    display: block;
 }

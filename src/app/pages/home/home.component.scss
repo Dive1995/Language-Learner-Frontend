@@ -1,0 +1,68 @@
+@import '../../../variables';
+
+.home-container{
+    max-width: $page-max-width;
+    padding: 10px 50px;
+    margin: 0 auto;
+
+    .search-video{
+        position: relative;
+        max-width: 1000px;
+        display: flex;
+        gap: 10px;
+        margin: 30px auto;
+
+        input{
+            flex: 1;
+            padding: 10px;
+            border-radius: $border-radius;
+            border: none;
+        }
+
+        button{
+            width: 45px;
+            border-radius: $border-radius;
+            border: none;
+        }
+
+        .search-btn{
+            &:hover{
+                cursor: pointer;
+            }
+        }
+
+        .search-error{
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            right: -50%;
+            color:$error-color;
+        }
+    }
+
+    .video__list{
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+
+        .video__list-item{
+            max-width: 300px;
+            color: $text-gray-dark;
+            text-decoration: none;
+
+
+            .video-thumbnail{
+                border-radius: $border-radius;
+                img{
+                    width: 100%;
+                    overflow: hidden;
+                    border-radius: inherit;
+                }
+            }
+
+            .video-title{
+                font-size: 14px;
+            }
+        }
+    }
+}

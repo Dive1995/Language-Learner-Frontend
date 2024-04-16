@@ -1,15 +1,17 @@
 <div class="youtube__container">
-    <div class="video__content">
-      <yt-video></yt-video>
-      <app-controller></app-controller>
-      <app-captions></app-captions>
-      
+    <div class="grid-container">
+      <div class="video">
+        <yt-video></yt-video>
+      </div>
+      <div class="vocabulary">
+        <app-vocabulary></app-vocabulary>        
+      </div>
+      <div class="transcript">
+        <app-controller></app-controller>
+        <app-captions></app-captions>    
+      </div>
     </div>
-    <div class="vocabulary__container">
-      <p *ngIf="!context">Click on any word in the caption to learn its meaning.</p>
 
-     
-    </div>
   </div>
   
   
