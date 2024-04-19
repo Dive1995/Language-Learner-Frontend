@@ -3,7 +3,7 @@
 Welcome to Language Learner, a powerful tool for language learners to immerse themselves in authentic content while expanding their vocabulary effortlessly.
 
 Home Page
-![Home Page](https://i.ibb.co/t4tTQQL/language-learner-homepage.jpg)
+![Home Page](https://i.ibb.co/kxzy28K/language-learner-homepage.png)
 
 Learn Page
 ![Learn Page](https://i.ibb.co/vcgpLMd/language-learner-learnpage.png)
