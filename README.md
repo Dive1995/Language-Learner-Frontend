@@ -2,10 +2,10 @@
 
 Welcome to Language Learner, a powerful tool for language learners to immerse themselves in authentic content while expanding their vocabulary effortlessly.
 
-![Home Page](https://i.ibb.co/tPRQhtC/language-learner-homepage.png)
-![Learn Page](https://i.ibb.co/HnyXw9k/language-learner-learnpage.png)
-![Hovering over to learn meaning of a word](https://i.ibb.co/mGtCtQY/language-learner-learnpage-wordmeaning.png)
-![List of vocabularies learned](https://i.ibb.co/dBgZ5ND/language-learner-learnpage-vocabularylist.png)
+![Home Page](https://i.ibb.co/t4tTQQL/language-learner-homepage.jpg)
+![Learn Page](https://i.ibb.co/vcgpLMd/language-learner-learnpage.png)
+![Hovering over to learn meaning of a word](https://i.ibb.co/xqkPFgb/language-learner-learnpage-wordmeaning.png)
+![List of vocabularies learned](https://i.ibb.co/vq5qSZs/language-learner-learnpage-vocabularylist.png)
 
 ## Key Features
 - Search any YouTube video in your target language and access original subtitles.
