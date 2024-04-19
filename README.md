@@ -2,6 +2,29 @@
 
 Welcome to Language Learner, a powerful tool for language learners to immerse themselves in authentic content while expanding their vocabulary effortlessly.
 
+<div class="carousel">
+  <img src="https://i.ibb.co/tPRQhtC/language-learner-homepage.png" alt="Home Page">
+  <img src="https://i.ibb.co/HnyXw9k/language-learner-learnpage.png" alt="Learn Page">
+  <img src="https://i.ibb.co/mGtCtQY/language-learner-learnpage-wordmeaning.png" alt="Hovering over to learn meaning of a word">
+  <img src="https://i.ibb.co/dBgZ5ND/language-learner-learnpage-vocabularylist.png" alt="List of vocabularies learned">
+</div>
+
+<style>
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+img {
+  flex: 0 0 auto;
+  width: 100%;
+  scroll-snap-align: start;
+}
+</style>
+
+
+
 ![Home Page](https://i.ibb.co/tPRQhtC/language-learner-homepage.png)
 ![Learn Page](https://i.ibb.co/HnyXw9k/language-learner-learnpage.png)
 ![Hovering over to learn meaning of a word](https://i.ibb.co/mGtCtQY/language-learner-learnpage-wordmeaning.png)
