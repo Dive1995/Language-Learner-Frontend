@@ -2,9 +2,16 @@
 
 Welcome to Language Learner, a powerful tool for language learners to immerse themselves in authentic content while expanding their vocabulary effortlessly.
 
+Home Page
 ![Home Page](https://i.ibb.co/t4tTQQL/language-learner-homepage.jpg)
+
+Learn Page
 ![Learn Page](https://i.ibb.co/vcgpLMd/language-learner-learnpage.png)
+
+Find meaning of a word by hovering over it
 ![Hovering over to learn meaning of a word](https://i.ibb.co/xqkPFgb/language-learner-learnpage-wordmeaning.png)
+
+Vocabularies learned from the specific video
 ![List of vocabularies learned](https://i.ibb.co/vq5qSZs/language-learner-learnpage-vocabularylist.png)
 
 ## Key Features
