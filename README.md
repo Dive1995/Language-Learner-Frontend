@@ -20,10 +20,10 @@ Welcome to Language Learner, a powerful tool for language learners to immerse th
 ## Getting Started
 To get started with [Your App Name], follow these steps:
 
-1. Clone this project repository and the [LanguageLearningServer](https://github.com/Dive1995/LanguageLearningServer.git) repository.
+1. Clone this project repository and the [Language-Learner-Backend](https://github.com/Dive1995/Language-Learner-Backend) repository.
     ```bash
-    git clone https://github.com/Dive1995/LanguageLearningApp.git
-    git clone https://github.com/Dive1995/LanguageLearningServer.git
+    git clone https://github.com/Dive1995/Language-Learner-Frontend.git
+    git clone https://github.com/Dive1995/Language-Learner-Backend.git
     ```
 2. Navigate to the server project directory and run the server using the command:
     ```bash
