@@ -2,24 +2,19 @@
 
 Welcome to Language Learner, a powerful tool for language learners to immerse themselves in authentic content while expanding their vocabulary effortlessly.
 
-Home Page
-![Home Page](https://i.ibb.co/kxzy28K/language-learner-homepage.png)
-
-Learn Page
-![Learn Page](https://i.ibb.co/vcgpLMd/language-learner-learnpage.png)
-
-Find meaning of a word by hovering over it
-![Hovering over to learn meaning of a word](https://i.ibb.co/xqkPFgb/language-learner-learnpage-wordmeaning.png)
-
-Vocabularies learned from the specific video
-![List of vocabularies learned](https://i.ibb.co/vq5qSZs/language-learner-learnpage-vocabularylist.png)
-
 ## Key Features
 - Search any YouTube video in your target language and access original subtitles.
-- Hover over words to instantly view their meanings and add them to your vocabulary list for future reference.
-- Support for auto-generated subtitles ensures accessibility to a wide range of content.
-- Words already learned on a specific video will be displayed as a list when the user watches it again, enhancing retention and reinforcement of vocabulary.
 - Paste any URLs of YouTube videos to start watching and learning instantly.
+  ![Home Page](https://i.ibb.co/kxzy28K/language-learner-homepage.png)
+
+- Hover over words to instantly view their meanings and add them to your vocabulary list for future reference.
+- Pause after each sentence.
+- Support for auto-generated subtitles ensures accessibility to a wide range of content.
+  ![Hovering over to learn meaning of a word](https://i.ibb.co/xqkPFgb/language-learner-learnpage-wordmeaning.png)
+
+- Words already learned on a specific video will be displayed as a list when the user watches it again, enhancing retention and reinforcement of vocabulary.
+  ![List of vocabularies learned](https://i.ibb.co/vq5qSZs/language-learner-learnpage-vocabularylist.png)
+
 
 
 ## Getting Started
