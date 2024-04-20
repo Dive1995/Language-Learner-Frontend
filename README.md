@@ -1,6 +1,6 @@
 # Language Learner
 
-Welcome to Language Learner, a powerful tool for language learners to immerse themselves in authentic content while expanding their vocabulary effortlessly.
+Welcome to Language Learner, a powerful tool for language learners to immerse themselves in authentic content from YouTube in their targeted language, while expanding their vocabulary effortlessly.
 
 ## Key Features
 - Search any YouTube video in your target language and access original subtitles.
